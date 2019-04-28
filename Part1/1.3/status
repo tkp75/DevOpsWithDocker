@@ -1,0 +1,4 @@
+OK: answer file saved
+NOTES: password can be found from both docker hub (image) repository and github (source) repository
+* https://hub.docker.com/r/devopsdockeruh/pull_exercise
+* https://github.com/docker-hy/docs-exercise
