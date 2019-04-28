@@ -1,0 +1,73 @@
+$ docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+27833a3ba0a5: Pulling fs layer
+ea005e36e544: Pulling fs layer
+d172c7f0578d: Pulling fs layer
+d172c7f0578d: Verifying Checksum
+d172c7f0578d: Download complete
+27833a3ba0a5: Verifying Checksum
+27833a3ba0a5: Download complete
+ea005e36e544: Verifying Checksum
+ea005e36e544: Download complete
+27833a3ba0a5: Pull complete
+ea005e36e544: Pull complete
+d172c7f0578d: Pull complete
+Digest: sha256:e71b1bf4281f25533cf15e6e5f9be4dac74d2328152edf7ecde23abc54e16c1c
+Status: Downloaded newer image for nginx:latest
+
+$ docker pull centos:7
+7: Pulling from library/centos
+8ba884070f61: Pulling fs layer
+8ba884070f61: Verifying Checksum
+8ba884070f61: Download complete
+8ba884070f61: Pull complete
+Digest: sha256:8d487d68857f5bc9595793279b33d082b03713341ddec91054382641d14db861
+Status: Downloaded newer image for centos:7
+
+$ docker pull fedora:latest
+latest: Pulling from library/fedora
+01eb078129a0: Pulling fs layer
+01eb078129a0: Verifying Checksum
+01eb078129a0: Download complete
+01eb078129a0: Pull complete
+Digest: sha256:8ee55e140e8751492ab2cfa4513c82093cd2716df9311ea6f442f1f1259cbb3e
+Status: Downloaded newer image for fedora:latest
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               latest              27a188018e18        11 days ago         109MB
+centos              7                   9f38484d220f        6 weeks ago         202MB
+jenkins/jenkins     lts                 256cb12e72d6        6 weeks ago         702MB
+fedora              latest              d09302f77cfc        6 weeks ago         275MB
+
+$ docker run -dit centos:7 bash
+bde920b4ccd440bee50b658e4498d3eb20dc04f4753936475578663243e25a0b
+
+$ docker run -dit fedora:latest bash
+caa254cd3ae9bcf9141b47999c982b8f338a3f3ca7769c10b5d88d2bb17a5520
+
+$ docker run -d nginx
+3a39fbbb462ba5d5d7bd9b9c150312432eb19eb49d5be590b69d2e7d09a159bc
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+3a39fbbb462b        nginx               "nginx -g 'daemon of…"   About a minute ago   Up About a minute   80/tcp              xenodochial_villani
+caa254cd3ae9        fedora:latest       "bash"                   About a minute ago   Up About a minute                       nervous_benz
+bde920b4ccd4        centos:7            "bash"                   7 minutes ago        Up 7 minutes                            boring_proskuriakova
+
+$ docker stop bde920b4ccd4 nervous_benz
+bde920b4ccd4
+nervous_benz
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+3a39fbbb462b        nginx               "nginx -g 'daemon of…"   2 minutes ago       Up 2 minutes        80/tcp              xenodochial_villani
+
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                       PORTS               NAMES
+3a39fbbb462b        nginx               "nginx -g 'daemon of…"   8 minutes ago       Up 8 minutes                 80/tcp              xenodochial_villani
+caa254cd3ae9        fedora:latest       "bash"                   8 minutes ago       Exited (0) 6 minutes ago                         nervous_benz
+bde920b4ccd4        centos:7            "bash"                   14 minutes ago      Exited (137) 6 minutes ago                       boring_proskuriakova
+
+$

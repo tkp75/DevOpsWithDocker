@@ -1,0 +1,7 @@
+Practice the commands.
+
+Start 3 containers from image that does not automatically exit, such as nginx, detached.
+
+Stop 2 of the containers leaving 1 up.
+
+Prove that you have completed this part of exercise by delivering the output for docker ps -a.
