@@ -1,0 +1,89 @@
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                        PORTS               NAMES
+3a39fbbb462b        nginx               "nginx -g 'daemon of…"   19 minutes ago      Up 19 minutes                 80/tcp              xenodochial_villani
+caa254cd3ae9        fedora:latest       "bash"                   20 minutes ago      Exited (0) 17 minutes ago                         nervous_benz
+bde920b4ccd4        centos:7            "bash"                   25 minutes ago      Exited (137) 17 minutes ago                       boring_proskuriakova
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               latest              27a188018e18        11 days ago         109MB
+centos              7                   9f38484d220f        6 weeks ago         202MB
+jenkins/jenkins     lts                 256cb12e72d6        6 weeks ago         702MB
+fedora              latest              d09302f77cfc        6 weeks ago         275MB
+hello-world         latest              fce289e99eb9        3 months ago        1.84kB
+
+$ docker stop 3a39fbbb462b
+3a39fbbb462b
+
+$ docker rm 3a39fbbb462b caa254cd3ae9 bde920b4ccd4
+3a39fbbb462b
+caa254cd3ae9
+bde920b4ccd4
+
+$ docker rmi nginx centos fedora hello-world
+Untagged: nginx:latest
+Untagged: nginx@sha256:e71b1bf4281f25533cf15e6e5f9be4dac74d2328152edf7ecde23abc54e16c1c
+Deleted: sha256:27a188018e1847b312022b02146bb7ac3da54e96fab838b7db9f102c8c3dd778
+Deleted: sha256:261d1996088c57b71d8ea9412f719bcbb8f4cb68a6e463d30abb85cc5fc5724b
+Deleted: sha256:e6fbd1f039a7391ab57afeb1b11a73781bcbd6ae8041d98c5988b90c46ce5726
+Deleted: sha256:5dacd731af1b0386ead06c8b1feff9f65d9e0bdfec032d2cd0bc03690698feda
+Untagged: fedora:latest
+Untagged: fedora@sha256:8ee55e140e8751492ab2cfa4513c82093cd2716df9311ea6f442f1f1259cbb3e
+Deleted: sha256:d09302f77cfcc3e867829d80ff47f9e7738ffef69730d54ec44341a9fb1d359b
+Deleted: sha256:b7ba3be6a0d6426356fc49f538f0f929ed00e51a0a90906e354a345d46e23a8b
+Untagged: hello-world:latest
+Untagged: hello-world@sha256:92695bc579f31df7a63da6922075d0666e565ceccad16b59c3374d2cf4e8e50e
+Deleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587e
+Deleted: sha256:af0b15c8625bb1938f1d7b17081031f649fd14e6b233688eea3c5483994a66a3
+Error: No such image: centos
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+centos              7                   9f38484d220f        6 weeks ago         202MB
+jenkins/jenkins     lts                 256cb12e72d6        6 weeks ago         702MB
+
+$ docker rmi centos:7
+Untagged: centos:7
+Untagged: centos@sha256:8d487d68857f5bc9595793279b33d082b03713341ddec91054382641d14db861
+Deleted: sha256:9f38484d220fa527b1fb19747638497179500a1bed8bf0498eb788229229e6e1
+Deleted: sha256:d69483a6face4499acb974449d1303591fcbb5cdce5420f36f8a6607bda11854
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+jenkins/jenkins     lts                 256cb12e72d6        6 weeks ago         702MB
+
+$ docker rmi jenkins/jenkins:lts
+Untagged: jenkins/jenkins:lts
+Untagged: jenkins/jenkins@sha256:12fd14965de7274b5201653b2bffa62700c5f5f336ec75c945321e2cb70d7af0
+Deleted: sha256:256cb12e72d600f6753b21448fa431cdd7f712558ac0a5b2f6538e7a69858c5e
+Deleted: sha256:9aac910f914b07adb2fe1c73822fc4cd7e10b72d195b513d7f616a75e95e5f4a
+Deleted: sha256:95504550de77be2e085499f7414a148d17f7ba270d90153cac744238626c6ca3
+Deleted: sha256:19d19132be96c27d316b0a0b3134176beea8668b9aff90a91a375e9432b1c413
+Deleted: sha256:d89c91d54679cf5bc47f578d7d8a4ff2d9def4332a26397406a0b090a7308bf6
+Deleted: sha256:ddbcaed5160e52af9abbf5ab4cdf606dc6dfe0582f822f6008abb63d39d75aeb
+Deleted: sha256:8ac4bc11e7e10620f761f4222208938961edb1ef3bfb38e2ef2cf39a3ef414aa
+Deleted: sha256:fd85ad3a4f6e58cbd50d94afeac58f8e3e55c7abc596056213321b9315f1fa98
+Deleted: sha256:4be4aea763c6ae6fb9816b17852d866d5f8ea7037c07164045ec9980096f629d
+Deleted: sha256:6f4288f10106dd369625e599a209246a8d4de29c7ba7547b549acc14425a40d1
+Deleted: sha256:8b4b2ec587128e4b4deed93421c2ca45a7b98425ffb412e0cb09338f10846bae
+Deleted: sha256:99ad44583b7327a956655dc73b61f74fa9bc2dba888b1e4085c2ab7a929cff9f
+Deleted: sha256:5eb2e91f9f8ed7ae4514863b60bbf414df987bcd21357bf386286d59c1ebb163
+Deleted: sha256:7080dd7e811240970f6646d7c141fb25dbed8f07cb9d182753f553a81eb64f5b
+Deleted: sha256:8602c9736adf2843f55e96ccf1389f142c81c0e9f91598dee54358bebfb50510
+Deleted: sha256:dc0fa1d8fef4dd64a09fb0942f418e5eaab930436075d749ad00e07179b3cd30
+Deleted: sha256:214d704a2968d6afc3d974197360335a0c7cb467e29f200f31939d897dd0a843
+Deleted: sha256:127e85e4eeabb41591238fbfba3a84feb80dbc2c2455bd29dd0dc76591e8fb59
+Deleted: sha256:e5885c49fd01d365bac1ee35d39fbe6e2f85f74f787b3e384addee5f41b6815e
+Deleted: sha256:5fd83feb03ebf717e192822a2e9684009856a9a9900fa561f28de4ac8b463c86
+Deleted: sha256:5bb0785f2eee7f27e4c6d9ac3e7f05838e243d22feb827b55d70762f1eb4781a
+
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+$
