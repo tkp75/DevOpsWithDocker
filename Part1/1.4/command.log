@@ -1,0 +1,72 @@
+$ alias docker="winpty docker"
+
+$ docker run -d devopsdockeruh/exec_bash_exercise
+Unable to find image 'devopsdockeruh/exec_bash_exercise:latest' locally
+latest: Pulling from devopsdockeruh/exec_bash_exercise
+741437d97401: Pull complete
+34d8874714d7: Pull complete
+0a108aa26679: Pull complete
+7f0334c36886: Pull complete
+65c95cb8b3be: Pull complete
+a36b708560f8: Pull complete
+4090f912e6c7: Pull complete
+ce5fe2607c2e: Pull complete
+9400f5f657d6: Pull complete
+c4919883f7fa: Pull complete
+Digest: sha256:c463832132d1fb0b8b3b60348a6fc36fda7512a4ef2d1050e8bea7b6a6d7a2f3
+Status: Downloaded newer image for devopsdockeruh/exec_bash_exercise:latest
+9203f87f77d59ca0da54b60ad2a69652f84a0c0f6a48d74310d70258f973a53e
+
+$ docker ps
+CONTAINER ID        IMAGE                               COMMAND             CREATED             STATUS              PORTS               NAMES
+9203f87f77d5        devopsdockeruh/exec_bash_exercise   "node index"        3 minutes ago       Up 3 minutes                            trusting_goodall
+
+$ docker exec -it 9203f87f77d59ca0da54b60ad2a69652f84a0c0f6a48d74310d70258f973a53e bash
+root@9203f87f77d5:/usr/app# tail -f ./logs.txt
+Tue, 30 Apr 2019 20:10:43 GMT
+Secret message is:
+"Docker is easy"
+Tue, 30 Apr 2019 20:10:49 GMT
+Tue, 30 Apr 2019 20:10:52 GMT
+Tue, 30 Apr 2019 20:10:55 GMT
+Tue, 30 Apr 2019 20:10:58 GMT
+Secret message is:
+"Docker is easy"
+Tue, 30 Apr 2019 20:11:04 GMT
+Tue, 30 Apr 2019 20:11:07 GMT
+Tue, 30 Apr 2019 20:11:10 GMT
+Tue, 30 Apr 2019 20:11:13 GMT
+Secret message is:
+"Docker is easy"
+Tue, 30 Apr 2019 20:11:19 GMT
+Tue, 30 Apr 2019 20:11:22 GMT
+^C
+root@9203f87f77d5:/usr/app# exit
+exit
+
+$ docker ps
+CONTAINER ID        IMAGE                               COMMAND             CREATED             STATUS              PORTS               NAMES
+9203f87f77d5        devopsdockeruh/exec_bash_exercise   "node index"        10 minutes ago      Up 10 minutes                           trusting_goodall
+
+$ docker exec -it 9203f87f77d59ca0da54b60ad2a69652f84a0c0f6a48d74310d70258f973a53e tail -f ./logs.txt
+Tue, 30 Apr 2019 20:22:33 GMT
+Tue, 30 Apr 2019 20:22:36 GMT
+Tue, 30 Apr 2019 20:22:39 GMT
+Tue, 30 Apr 2019 20:22:42 GMT
+Secret message is:
+"Docker is easy"
+Tue, 30 Apr 2019 20:22:48 GMT
+Tue, 30 Apr 2019 20:22:51 GMT
+Tue, 30 Apr 2019 20:22:54 GMT
+Tue, 30 Apr 2019 20:22:57 GMT
+Secret message is:
+"Docker is easy"
+^C
+
+$ docker stop 9203f87f77d59ca0da54b60ad2a69652f84a0c0f6a48d74310d70258f973a53e
+9203f87f77d59ca0da54b60ad2a69652f84a0c0f6a48d74310d70258f973a53e
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+$
