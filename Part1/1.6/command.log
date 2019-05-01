@@ -1,0 +1,114 @@
+$  docker build -t docker-clock .
+Sending build context to Docker daemon  6.144kB
+Step 1/3 : FROM devopsdockeruh/overwrite_cmd_exercise
+latest: Pulling from devopsdockeruh/overwrite_cmd_exercise
+e79bb959ec00: Pulling fs layer
+d4b7902036fe: Pulling fs layer
+1b2a72d4e030: Pulling fs layer
+d54db43011fd: Pulling fs layer
+69d473365bb3: Pulling fs layer
+6e2490ee2dc8: Pulling fs layer
+727ad86f629c: Pulling fs layer
+23840d79cb44: Pulling fs layer
+4cfc73104030: Pulling fs layer
+68e8fecd059c: Pulling fs layer
+5746e9d6f35a: Pulling fs layer
+d54db43011fd: Waiting
+69d473365bb3: Waiting
+6e2490ee2dc8: Waiting
+727ad86f629c: Waiting
+23840d79cb44: Waiting
+4cfc73104030: Waiting
+68e8fecd059c: Waiting
+5746e9d6f35a: Waiting
+1b2a72d4e030: Verifying Checksum
+1b2a72d4e030: Download complete
+d4b7902036fe: Verifying Checksum
+d4b7902036fe: Download complete
+d54db43011fd: Verifying Checksum
+d54db43011fd: Download complete
+6e2490ee2dc8: Verifying Checksum
+6e2490ee2dc8: Download complete
+e79bb959ec00: Verifying Checksum
+e79bb959ec00: Download complete
+727ad86f629c: Verifying Checksum
+727ad86f629c: Download complete
+23840d79cb44: Verifying Checksum
+23840d79cb44: Download complete
+e79bb959ec00: Pull complete
+4cfc73104030: Verifying Checksum
+4cfc73104030: Download complete
+68e8fecd059c: Verifying Checksum
+68e8fecd059c: Download complete
+d4b7902036fe: Pull complete
+1b2a72d4e030: Pull complete
+5746e9d6f35a: Verifying Checksum
+5746e9d6f35a: Download complete
+d54db43011fd: Pull complete
+69d473365bb3: Verifying Checksum
+69d473365bb3: Download complete
+69d473365bb3: Pull complete
+6e2490ee2dc8: Pull complete
+727ad86f629c: Pull complete
+23840d79cb44: Pull complete
+4cfc73104030: Pull complete
+68e8fecd059c: Pull complete
+5746e9d6f35a: Pull complete
+Digest: sha256:0c2a9eb2e7dc97e9217abbd13d6c45767cc09f7e82b7dce113fe2322161f38a6
+Status: Downloaded newer image for devopsdockeruh/overwrite_cmd_exercise:latest
+ ---> 0f7f459b76c9
+Step 2/3 : ENTRYPOINT ["node", "index", "--clock"]
+ ---> Running in f8d62ff76864
+Removing intermediate container f8d62ff76864
+ ---> 2f7f2c8bbbfb
+Step 3/3 : CMD ["0"]
+ ---> Running in e4b7cc368a7c
+Removing intermediate container e4b7cc368a7c
+ ---> 88c1ddcd0969
+Successfully built 88c1ddcd0969
+Successfully tagged docker-clock:latest
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+
+$ docker run docker-clock
+1
+2
+3
+4
+5
+6
+
+
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+7a99996970c2        docker-clock        "node index --clock 0"   12 seconds ago      Up 11 seconds                           nifty_saha
+
+$ docker stop 7a99996970c2
+7a99996970c2
+
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
+7a99996970c2        docker-clock        "node index --clock 0"   31 seconds ago      Exited (0) 2 seconds ago                       nifty_saha
+
+$ docker run docker-clock 10
+11
+12
+13
+14
+15
+
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                          PORTS               NAMES
+d5fbc2c0504e        docker-clock        "node index --clock …"   12 seconds ago       Up 11 seconds                                       wonderful_lamarr
+7a99996970c2        docker-clock        "node index --clock 0"   About a minute ago   Exited (0) About a minute ago                       nifty_saha
+
+$ docker stop d5fbc2c0504e
+d5fbc2c0504e
+
+$ docker container prune -f
+Deleted Containers:
+d5fbc2c0504e99bbf3f9a0d9b13e93bd009fe9688e4477a7fd6a9c48b04376ac
+7a99996970c2dfb72c11a3d9ff42e783c0aa77c536439bc1b23c256317238af9
+
+Total reclaimed space: 0B
+
+$
