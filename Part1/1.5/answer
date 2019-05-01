@@ -1,0 +1,32 @@
+Solution:
+$  docker run -d --rm -it --name ubuntu ubuntu sh -c 'echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;'
+$ docker exec -it ubuntu sh -c 'apt-get -y update && apt-get -y install curl'
+$ docker attach --sig-proxy=false ubuntu
+helsinki.fi
+Searching..
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
+
+$
+
+
+Alternative (smart) answer:
+$ docker run --rm -it --name ubuntu ubuntu sh -c 'echo "Please wait, resynchronizing the package index and installing curl...";apt-get -qq update && apt-get -qq -o DPkg::Options::=--force-confdef install curl && (echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website)'
+Please wait, resynchronizing the package index and installing curl...
+Input website:
+helsinki.fi
+Searching..
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
+
+$
