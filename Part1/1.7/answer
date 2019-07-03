@@ -1,0 +1,4 @@
+$ vi script.sh
+$ vi Dockerfile
+$ docker build -t curler .
+$ docker run -it curler
