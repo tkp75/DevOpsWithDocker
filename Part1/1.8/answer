@@ -1,0 +1,2 @@
+$ docker volume create --driver local --name=app_logs
+$ docker run --volume=app_logs:"/usr/app/" devopsdockeruh/first_volume_exercise
