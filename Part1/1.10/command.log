@@ -1,0 +1,96 @@
+$ git clone git@github.com:docker-hy/frontend-example-docker.git
+Cloning into 'frontend-example-docker'...
+remote: Enumerating objects: 133, done.
+remote: Total 133 (delta 0), reused 0 (delta 0), pack-reused 133
+Receiving objects: 100% (133/133), 156.31 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (58/58), done.
+$ cd frontend-example-docker
+$ vi Dockerfile
+$ cat Dockerfile 
+FROM node
+EXPOSE 5000
+WORKDIR /home/node/
+COPY . .
+RUN chown -R node:node .
+RUN npm install
+CMD npm start
+$ docker build .
+Sending build context to Docker daemon  624.6kB
+Step 1/7 : FROM node
+latest: Pulling from library/node
+6f2f362378c5: Pull complete 
+494c27a8a6b8: Pull complete 
+7596bb83081b: Pull complete 
+372744b62d49: Pull complete 
+615db220d76c: Pull complete 
+afaefeaac9ee: Pull complete 
+79dafa50fbbc: Pull complete 
+afca1e3f7e62: Pull complete 
+be1b413c5897: Pull complete 
+Digest: sha256:3f5857689e9eceef28a83f915a91476369f48cb826f2436a1638e48e58253efb
+Status: Downloaded newer image for node:latest
+ ---> 0601b4151f1d
+Step 2/7 : EXPOSE 5000
+ ---> Running in c982203f9b2f
+Removing intermediate container c982203f9b2f
+ ---> dafbe33badf9
+Step 3/7 : WORKDIR /home/node/
+ ---> Running in 00ad6842aba4
+Removing intermediate container 00ad6842aba4
+ ---> 790c636d5842
+Step 4/7 : COPY . .
+ ---> 5a453a59d66e
+Step 5/7 : RUN chown -R node:node .
+ ---> Running in 9908cb64f245
+Removing intermediate container 9908cb64f245
+ ---> 302753434ec8
+Step 6/7 : RUN npm install
+ ---> Running in 2dd5ac32cca9
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1029 packages from 415 contributors and audited 11636 packages in 20.561s
+found 6 vulnerabilities (4 moderate, 2 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 2dd5ac32cca9
+ ---> 8e7e774e2c53
+Step 7/7 : CMD npm start
+ ---> Running in dcec4ce04aed
+Removing intermediate container dcec4ce04aed
+ ---> dc15c1359813
+Successfully built dc15c1359813
+$ docker run -d -p 5000:5000 dc15c1359813
+7fdc5315c2ff770e81a34c57f3c954755d3067327b41614b676dcfc5933284e7
+$ docker logs --tail 2 7fdc5315c2ff770e81a34c57f3c954755d3067327b41614b676dcfc5933284e7
+UPDATE AVAILABLE The latest version of `serve` is 11.0.2
+INFO: Accepting connections at http://localhost:5000
+$ $ wget -nv -S -O- http://localhost:5000/
+  HTTP/1.1 200 OK
+  Last-Modified: Sat, 06 Jul 2019 19:53:53 GMT
+  Content-Length: 454
+  Content-Disposition: inline; filename="index.html"
+  Accept-Ranges: bytes
+  Content-Type: text/html; charset=utf-8
+  Vary: Accept-Encoding
+  Date: Sat, 06 Jul 2019 19:58:32 GMT
+  Connection: keep-alive
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>Webpack App</title>
+    <link href="vendors~main-1.css" rel="stylesheet" />
+    <link href="main.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root">
+    </div>
+    <script src="vendors~main.js" type="text/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
+  </body>
+</html>
+2019-07-06 22:58:32 URL:http://localhost:5000/ [454/454] -> "-" [1]
+$ docker stop 7fdc5315c2ff770e81a34c57f3c954755d3067327b41614b676dcfc5933284e7
+7fdc5315c2ff770e81a34c57f3c954755d3067327b41614b676dcfc5933284e7
+$
