@@ -1,0 +1,7 @@
+Lets create a Dockerfile for a Java Spring project: github page https://github.com/docker-hy/spring-example-project
+
+The setup should be straightforward with the README instructions. Tips to get you started:
+
+Use openjdk image (https://hub.docker.com/_/openjdk) FROM openjdk:<tag> to get java instead of installing it manually.
+
+You’ve completed the exercise when you see a ‘Success’ message in your browser.
