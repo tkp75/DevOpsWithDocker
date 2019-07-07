@@ -10,15 +10,19 @@ $ cd backend-example-docker
 $ vi Dockerfile
 $ cat Dockerfile 
 FROM node
-EXPOSE 5000
+EXPOSE 8000
+ENV FRONT_URL=http://localhost:5000
 WORKDIR /home/node/
 COPY . .
+RUN mkdir logs
+RUN mv -f logs.txt logs/
+RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
 RUN chown -R node:node .
 RUN npm install
 CMD npm start
 $ docker build -t backend-example .
-ending build context to Docker daemon  358.4kB
-Step 1/10 : FROM node
+Sending build context to Docker daemon  358.4kB
+Step 1/11 : FROM node
 latest: Pulling from library/node
 6f2f362378c5: Pull complete 
 494c27a8a6b8: Pull complete 
@@ -32,34 +36,38 @@ be1b413c5897: Pull complete
 Digest: sha256:3f5857689e9eceef28a83f915a91476369f48cb826f2436a1638e48e58253efb
 Status: Downloaded newer image for node:latest
  ---> 0601b4151f1d
-Step 2/10 : EXPOSE 8000
- ---> Running in aea025a295a3
-Removing intermediate container aea025a295a3
- ---> 2ae0eacc04e2
-Step 3/10 : WORKDIR /home/node/
- ---> Running in c3c47ab257ba
-Removing intermediate container c3c47ab257ba
- ---> 8b015324b27b
-Step 4/10 : COPY . .
- ---> 7235af2e6f6f
-Step 5/10 : RUN mkdir logs
- ---> Running in 0b6b097eba25
-Removing intermediate container 0b6b097eba25
- ---> dcd5c32a1249
-Step 6/10 : RUN mv -f logs.txt logs/
- ---> Running in e4d148a8e917
-Removing intermediate container e4d148a8e917
- ---> 0549bbdfbab8
-Step 7/10 : RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
- ---> Running in eb9b76b0d590
-Removing intermediate container eb9b76b0d590
- ---> 606f63c23935
-Step 8/10 : RUN chown -R node:node .
- ---> Running in 85175afdd99b
-Removing intermediate container 85175afdd99b
- ---> 803ff24bfa27
-Step 9/10 : RUN npm install
- ---> Running in 9677b9a335f1
+Step 2/11 : EXPOSE 8000
+ ---> Running in b52bd4d9bb4a
+Removing intermediate container b52bd4d9bb4a
+ ---> 3346838fa045
+Step 3/11 : ENV FRONT_URL=http://localhost:5000
+ ---> Running in 622865c54fa8
+Removing intermediate container 622865c54fa8
+ ---> 5d694b03cf76
+Step 4/11 : WORKDIR /home/node/
+ ---> Running in 508f318a7939
+Removing intermediate container 508f318a7939
+ ---> f22d45d7606b
+Step 5/11 : COPY . .
+ ---> 1f329c04cfb8
+Step 6/11 : RUN mkdir logs
+ ---> Running in 6e373d1df622
+Removing intermediate container 6e373d1df622
+ ---> d16179f57a90
+Step 7/11 : RUN mv -f logs.txt logs/
+ ---> Running in e3ae76e1cd52
+Removing intermediate container e3ae76e1cd52
+ ---> 7600c51736ae
+Step 8/11 : RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
+ ---> Running in a5a4b0e905c5
+Removing intermediate container a5a4b0e905c5
+ ---> b5f27b66ef9a
+Step 9/11 : RUN chown -R node:node .
+ ---> Running in f7a888224ad8
+Removing intermediate container f7a888224ad8
+ ---> 5533d78d372d
+Step 10/11 : RUN npm install
+ ---> Running in d6d9dcbefe98
 
 > nodemon@1.18.9 postinstall /home/node/node_modules/nodemon
 > node bin/postinstall || exit 0
@@ -70,36 +78,100 @@ Love nodemon? You can now support the project via the open collective:
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.4 (node_modules/fsevents):
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
 
-added 606 packages from 458 contributors and audited 5317 packages in 12.582s
+added 606 packages from 458 contributors and audited 5317 packages in 11.684s
 found 4 vulnerabilities (1 moderate, 3 high)
   run `npm audit fix` to fix them, or `npm audit` for details
-Removing intermediate container 9677b9a335f1
- ---> 8dc56d560e3d
-Step 10/10 : CMD npm start
- ---> Running in e5079fe01851
-Removing intermediate container e5079fe01851
- ---> 37f73bc6b106
-Successfully built 37f73bc6b106
+Removing intermediate container d6d9dcbefe98
+ ---> 738fc131e5e0
+Step 11/11 : CMD npm start
+ ---> Running in f101e6fb4191
+Removing intermediate container f101e6fb4191
+ ---> a2cfb79ab0c0
+Successfully built a2cfb79ab0c0
 Successfully tagged backend-example:latest
-$ docker volume create --driver local --name=logs
-logs
-$ docker run -d -p 8000:8000 -v logs:/home/node/logs backend-example
-58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
-$ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+$ docker volume create --driver local --name=backend_logs
+backend_logs
+$ docker run -d -p 8000:8000 -v backend_logs:/home/node/logs --name backend backend-example
+6cf519317a2f810348cb181c8d0b6f1eafdedf31c92790d8b76356eb19c91090
+$ docker logs --tail 1 backend
 Started on port 8000
-$ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
-Started on port 8000
-[tpakarin@centos7 backend-example-docker]$ wget -nv -S -O- http://localhost:8000
-  HTTP/1.1 200 OK
-  X-Powered-By: Express
-  Access-Control-Allow-Origin: 
-  Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
-  Content-Type: text/html; charset=utf-8
-  Content-Length: 56
-  ETag: W/"38-kNCveM+0J9cBkxUgznUtzYVrhXE"
-  Date: Sun, 07 Jul 2019 12:17:18 GMT
-  Connection: keep-alive
-Port configured correctly, generated message in logs.txt2019-07-07 15:17:18 URL:http://localhost:8000/ [56/56] -> "-" [1]
-$ docker stop 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
-58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
-$
+$ cd ..
+$ git clone git@github.com:docker-hy/frontend-example-docker.git
+Cloning into 'frontend-example-docker'...
+remote: Enumerating objects: 133, done.
+remote: Total 133 (delta 0), reused 0 (delta 0), pack-reused 133
+Receiving objects: 100% (133/133), 156.31 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (58/58), done.
+$ cd frontend-example-docker
+$ vi Dockerfile
+$ cat Dockerfile 
+FROM node
+EXPOSE 5000
+ENV API_URL=http://localhost:8000
+WORKDIR /home/node/
+COPY . .
+RUN mkdir logs
+RUN touch /home/node/logs/logs.txt
+RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
+RUN chown -R node:node .
+RUN npm install
+CMD npm start
+$ docker build -t frontend-example .
+Sending build context to Docker daemon  624.6kB
+Step 1/11 : FROM node
+ ---> 0601b4151f1d
+Step 2/11 : EXPOSE 5000
+ ---> Using cache
+ ---> d7fd77a8689a
+Step 3/11 : ENV API_URL=http://localhost:8000
+ ---> Using cache
+ ---> 54d0bd7aefde
+Step 4/11 : WORKDIR /home/node/
+ ---> Using cache
+ ---> a5f85074d874
+Step 5/11 : COPY . .
+ ---> 0cdbb39f0449
+Step 6/11 : RUN mkdir logs
+ ---> Running in 9b0d60cd78e1
+Removing intermediate container 9b0d60cd78e1
+ ---> 90fa1dc9904f
+Step 7/11 : RUN touch /home/node/logs/logs.txt
+ ---> Running in e50a1f42480d
+Removing intermediate container e50a1f42480d
+ ---> 03cb5148aa50
+Step 8/11 : RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
+ ---> Running in 20345b78c68b
+Removing intermediate container 20345b78c68b
+ ---> 4e7c17594cee
+Step 9/11 : RUN chown -R node:node .
+ ---> Running in befa7ff038ce
+Removing intermediate container befa7ff038ce
+ ---> bc69b9676d56
+Step 10/11 : RUN npm install
+ ---> Running in 57053a8ee225
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1029 packages from 415 contributors and audited 11636 packages in 21.32s
+found 6 vulnerabilities (4 moderate, 2 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 57053a8ee225
+ ---> c6a802e4337c
+Step 11/11 : CMD npm start
+ ---> Running in 3e2eb4c19128
+Removing intermediate container 3e2eb4c19128
+ ---> be559da7cb58
+Successfully built be559da7cb58
+Successfully tagged frontend-example:latest
+$ docker volume create --driver local --name=frontend_logs
+frontend_logs
+$ docker run -d -p 5000:5000 -v frontend_logs:/home/node/logs --name frontend frontend-example
+4647ee8d49612a105920d4461f1f20a51168f76b724169b27256bb04e5df3132
+$ docker logs --tail 1 frontend
+INFO: Accepting connections at http://localhost:5000
+$ firefox http://localhost:5000 &
+#---
+Part 1
+Exercise 1.10: Congratulations! You configured your ports correctly!
+Exercise 1.12: [Press to Test!] Working!
+#---
