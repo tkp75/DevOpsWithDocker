@@ -1,0 +1,105 @@
+$ git clone git@github.com:docker-hy/backend-example-docker
+Cloning into 'backend-example-docker'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 87 (delta 0), reused 0 (delta 0), pack-reused 84
+Receiving objects: 100% (87/87), 76.75 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (32/32), done.
+$ cd backend-example-docker
+$ vi Dockerfile
+$ cat Dockerfile 
+FROM node
+EXPOSE 5000
+WORKDIR /home/node/
+COPY . .
+RUN chown -R node:node .
+RUN npm install
+CMD npm start
+$ docker build -t backend-example .
+ending build context to Docker daemon  358.4kB
+Step 1/10 : FROM node
+latest: Pulling from library/node
+6f2f362378c5: Pull complete 
+494c27a8a6b8: Pull complete 
+7596bb83081b: Pull complete 
+372744b62d49: Pull complete 
+615db220d76c: Pull complete 
+afaefeaac9ee: Pull complete 
+79dafa50fbbc: Pull complete 
+afca1e3f7e62: Pull complete 
+be1b413c5897: Pull complete 
+Digest: sha256:3f5857689e9eceef28a83f915a91476369f48cb826f2436a1638e48e58253efb
+Status: Downloaded newer image for node:latest
+ ---> 0601b4151f1d
+Step 2/10 : EXPOSE 8000
+ ---> Running in aea025a295a3
+Removing intermediate container aea025a295a3
+ ---> 2ae0eacc04e2
+Step 3/10 : WORKDIR /home/node/
+ ---> Running in c3c47ab257ba
+Removing intermediate container c3c47ab257ba
+ ---> 8b015324b27b
+Step 4/10 : COPY . .
+ ---> 7235af2e6f6f
+Step 5/10 : RUN mkdir logs
+ ---> Running in 0b6b097eba25
+Removing intermediate container 0b6b097eba25
+ ---> dcd5c32a1249
+Step 6/10 : RUN mv -f logs.txt logs/
+ ---> Running in e4d148a8e917
+Removing intermediate container e4d148a8e917
+ ---> 0549bbdfbab8
+Step 7/10 : RUN ln -s /home/node/logs/logs.txt /home/node/logs.txt
+ ---> Running in eb9b76b0d590
+Removing intermediate container eb9b76b0d590
+ ---> 606f63c23935
+Step 8/10 : RUN chown -R node:node .
+ ---> Running in 85175afdd99b
+Removing intermediate container 85175afdd99b
+ ---> 803ff24bfa27
+Step 9/10 : RUN npm install
+ ---> Running in 9677b9a335f1
+
+> nodemon@1.18.9 postinstall /home/node/node_modules/nodemon
+> node bin/postinstall || exit 0
+
+Love nodemon? You can now support the project via the open collective:
+ > https://opencollective.com/nodemon/donate
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.4 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 606 packages from 458 contributors and audited 5317 packages in 12.582s
+found 4 vulnerabilities (1 moderate, 3 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 9677b9a335f1
+ ---> 8dc56d560e3d
+Step 10/10 : CMD npm start
+ ---> Running in e5079fe01851
+Removing intermediate container e5079fe01851
+ ---> 37f73bc6b106
+Successfully built 37f73bc6b106
+Successfully tagged backend-example:latest
+$ docker volume create --driver local --name=logs
+logs
+$ docker run -d -p 8000:8000 -v logs:/home/node/logs backend-example
+58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+$ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+Started on port 8000
+$ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+Started on port 8000
+[tpakarin@centos7 backend-example-docker]$ wget -nv -S -O- http://localhost:8000
+  HTTP/1.1 200 OK
+  X-Powered-By: Express
+  Access-Control-Allow-Origin: 
+  Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+  Content-Type: text/html; charset=utf-8
+  Content-Length: 56
+  ETag: W/"38-kNCveM+0J9cBkxUgznUtzYVrhXE"
+  Date: Sun, 07 Jul 2019 12:17:18 GMT
+  Connection: keep-alive
+Port configured correctly, generated message in logs.txt2019-07-07 15:17:18 URL:http://localhost:8000/ [56/56] -> "-" [1]
+$ docker stop 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
+$
