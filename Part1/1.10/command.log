@@ -64,7 +64,7 @@ $ docker run -d -p 5000:5000 dc15c1359813
 $ docker logs --tail 2 7fdc5315c2ff770e81a34c57f3c954755d3067327b41614b676dcfc5933284e7
 UPDATE AVAILABLE The latest version of `serve` is 11.0.2
 INFO: Accepting connections at http://localhost:5000
-$ $ wget -nv -S -O- http://localhost:5000/
+$ wget -nv -S -O- http://localhost:5000/
   HTTP/1.1 200 OK
   Last-Modified: Sat, 06 Jul 2019 19:53:53 GMT
   Content-Length: 454
