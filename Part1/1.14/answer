@@ -1,0 +1,5 @@
+$ cd rails-example-project/
+$ vi Dockerfile
+$ docker build -t rails-example .
+$ docker run -d -p 3000:3000 --name rails rails-example
+$ firefox http://localhost:3000 &
