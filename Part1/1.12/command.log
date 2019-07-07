@@ -175,3 +175,7 @@ Part 1
 Exercise 1.10: Congratulations! You configured your ports correctly!
 Exercise 1.12: [Press to Test!] Working!
 #---
+$ docker stop frontend backend
+frontend
+backend
+$
