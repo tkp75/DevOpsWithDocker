@@ -87,8 +87,6 @@ $ docker run -d -p 8000:8000 -v logs:/home/node/logs backend-example
 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
 $ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
 Started on port 8000
-$ docker logs --tail 1 58d93558a7cb5434e074bb91cbf6155b7de9d8c1c74d46ad6904f6b5678ca9a5
-Started on port 8000
 [tpakarin@centos7 backend-example-docker]$ wget -nv -S -O- http://localhost:8000
   HTTP/1.1 200 OK
   X-Powered-By: Express
