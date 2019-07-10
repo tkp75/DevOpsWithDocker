@@ -1,0 +1,72 @@
+$ docker pull devopsdockeruh/heroku-example
+Using default tag: latest
+latest: Pulling from devopsdockeruh/heroku-example
+ab1fc7e4bf91: Pull complete 
+35fba333ff52: Pull complete 
+f0cb1fa13079: Pull complete 
+3d1dd648b5ad: Pull complete 
+49f7a0920ce1: Pull complete 
+8cf8e3de2ce5: Pull complete 
+474787825669: Pull complete 
+15d7bfce5edc: Pull complete 
+d2d2623825c8: Pull complete 
+e74c98f3ebfa: Pull complete 
+8de9e48ee5db: Pull complete 
+1d6d387ff0c9: Pull complete 
+7f0fb2fce006: Pull complete 
+4f191e04d0ba: Pull complete 
+0fe28e9dc5b1: Pull complete 
+Digest: sha256:7b355fd5a666655eeed4fd8b7836824e240611e7916841cfffd02a4cd10a1ce4
+Status: Downloaded newer image for devopsdockeruh/heroku-example:latest
+$ cd
+$ wget https://cli-assets.heroku.com/heroku-linux-x64.tar.gz
+--2019-07-09 23:08:28--  https://cli-assets.heroku.com/heroku-linux-x64.tar.gz
+Resolving cli-assets.heroku.com (cli-assets.heroku.com)... 13.32.43.8, 13.32.43.103, 13.32.43.112, ...
+Connecting to cli-assets.heroku.com (cli-assets.heroku.com)|13.32.43.8|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 26829451 (26M) [application/gzip]
+Saving to: ‘heroku-linux-x64.tar.gz’
+
+100%[==========================================================================================>] 26,829,451  8.22MB/s   in 3.1s   
+
+2019-07-09 23:08:31 (8.22 MB/s) - ‘heroku-linux-x64.tar.gz’ saved [26829451/26829451]
+
+$ tar xvf heroku-linux-x64.tar.gz 
+$ mkdir bin
+$ ln -s `pwd`/heroku/bin/heroku `pwd`/bin/heroku
+$ heroku --version
+heroku/7.26.2 linux-x64 node-v11.14.0
+$ rm heroku-linux-x64.tar.gz
+$ heroku login
+heroku: Press any key to open up the browser to login or q to exit: 
+Opening browser to https://cli-auth.heroku.com/auth/browser/a1a58a54-723b-486c-9b3d-fd9c78044851
+Logging in... done
+Logged in as tommi.pakarinen@gmail.com
+$ heroku container:login
+WARNING! Your password will be stored unencrypted in /home/tpakarin/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+$ docker tag devopsdockeruh/heroku-example registry.heroku.com/dowd/web
+$ docker push registry.heroku.com/dowd/web
+The push refers to repository [registry.heroku.com/dowd/web]
+3ac96a6ba5b8: Pushed 
+4fd89569d353: Pushed 
+5f05d62a5f6d: Pushed 
+0c5e45eed8a0: Pushed 
+568cd074539f: Pushed 
+1e0f4e8ab9d2: Pushed 
+30157feee804: Pushed 
+8fcdbfe1b942: Pushed 
+33e4b5ecc45d: Pushed 
+50f1e13ab060: Pushed 
+56a89222b908: Pushed 
+a89464ad2a8f: Pushed 
+76dfa41f0a1d: Pushed 
+c240c542ed55: Pushed 
+badfbcebf7f8: Pushed 
+latest: digest: sha256:7b355fd5a666655eeed4fd8b7836824e240611e7916841cfffd02a4cd10a1ce4 size: 3479
+$  heroku container:release web -a dowd
+Releasing images web to dowd... done
+$ 
