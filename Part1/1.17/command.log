@@ -8,15 +8,15 @@ Digest: sha256:a799dd8a2ded4a83484bbae769d97655392b3f86533ceb7dd96bbac929809f3c
 Status: Downloaded newer image for centos:7
  ---> 9f38484d220f
 Step 2/6 : ENV container docker
- ---> Running in 2fcf8c565c1d
-Removing intermediate container 2fcf8c565c1d
- ---> e4f0e12561a1
+ ---> Running in a0ce6768dd9b
+Removing intermediate container a0ce6768dd9b
+ ---> afad5ff6c461
 Step 3/6 : EXPOSE 22
- ---> Running in b6f41d9f7f1f
-Removing intermediate container b6f41d9f7f1f
- ---> eefab9ed5126
-Step 4/6 : RUN yum -y update &&     yum -y install ksh.x86_64 vim-enhanced.x86_64 less.x86_64 man-db.x86_64 man-pages.noarch                    openssh.x86_64 openssh-clients.x86_64 openssh-server.x86_64                    openssl.x86_64 certmonger.x86_64 &&     yum clean all &&     echo "password" | passwd --stdin root &&     rm -f /run/nologin &&     mkdir -p mkdir /var/run/sshd && chmod -rx /var/run/sshd &&     ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' &&     (cd /lib/systemd/system/sysinit.target.wants/;      for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done) &&     rm -f /lib/systemd/system/multi-user.target.wants/* &&     rm -f /etc/systemd/system/*.wants/* &&     rm -f /lib/systemd/system/local-fs.target.wants/* &&     rm -f /lib/systemd/system/sockets.target.wants/*udev* &&     rm -f /lib/systemd/system/sockets.target.wants/*initctl* &&     rm -f /lib/systemd/system/basic.target.wants/* &&     rm -f /lib/systemd/system/anaconda.target.wants/* &&     ln -s /lib/systemd/system/sshd.service           /etc/systemd/system/multi-user.target.wants/sshd.service &&     ln -s /lib/systemd/system/systemd-user-sessions.service           /etc/systemd/system/multi-user.target.wants/systemd-user-sessions.service
- ---> Running in ec521a50c28b
+ ---> Running in 413d4ff479bd
+Removing intermediate container 413d4ff479bd
+ ---> 0678c12f1a82
+Step 4/6 : RUN yum -y update &&     yum -y install ksh.x86_64 vim-enhanced.x86_64 less.x86_64 man-db.x86_64 man-pages.noarch                    openssh.x86_64 openssh-clients.x86_64 openssh-server.x86_64                    openssl.x86_64 certmonger.x86_64 &&     yum clean all &&     echo "password" | passwd --stdin root &&     rm -f /run/nologin &&     mkdir -p mkdir /var/run/sshd && chmod -rx /var/run/sshd &&     ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' &&     (cd /lib/systemd/system/sysinit.target.wants/;      for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done) &&     rm -f /lib/systemd/system/multi-user.target.wants/* &&     rm -f /etc/systemd/system/*.wants/* &&     rm -f /lib/systemd/system/local-fs.target.wants/* &&     rm -f /lib/systemd/system/sockets.target.wants/*udev* &&     rm -f /lib/systemd/system/sockets.target.wants/*initctl* &&     rm -f /lib/systemd/system/basic.target.wants/* &&     rm -f /lib/systemd/system/anaconda.target.wants/* &&     ln -s /lib/systemd/system/sshd.service           /etc/systemd/system/multi-user.target.wants/sshd.service
+ ---> Running in edefcd8a374e
 Loaded plugins: fastestmirror, ovl
 Determining fastest mirrors
  * base: centos.mirror.far.fi
@@ -118,7 +118,7 @@ Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
 warning: /var/cache/yum/x86_64/7/updates/packages/bind-license-9.9.4-74.el7_6.1.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
 Public key for bind-license-9.9.4-74.el7_6.1.noarch.rpm is not installed
 --------------------------------------------------------------------------------
-Total                                               10 MB/s |  36 MB  00:03     
+Total                                              4.4 MB/s |  36 MB  00:08     
 Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 Importing GPG key 0xF4A80EB5:
  Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
@@ -448,7 +448,7 @@ Total download size: 30 M
 Installed size: 84 M
 Downloading packages:
 --------------------------------------------------------------------------------
-Total                                              9.4 MB/s |  30 MB  00:03     
+Total                                              6.1 MB/s |  30 MB  00:04     
 Running transaction check
 Running transaction test
 Transaction test succeeded
@@ -624,30 +624,44 @@ Generating public/private rsa key pair.
 Your identification has been saved in /etc/ssh/ssh_host_rsa_key.
 Your public key has been saved in /etc/ssh/ssh_host_rsa_key.pub.
 The key fingerprint is:
-SHA256:+vS8d2joKHHK6ypxVec+bVpnzzDAtck5qjHSGJxJFg4 root@ec521a50c28b
+SHA256:0rDc4XfFH0CEd5+vRRyNqdEVXIZ6HyqUtBRQ42D3c9c root@edefcd8a374e
 The key's randomart image is:
 +---[RSA 2048]----+
-|      E ..       |
-|       o+ .   .  |
-|       =.= . o + |
-|      . = . o *  |
-|     .  S= . o . |
-|  . . ..+ * = =  |
-|   o ..+.. X + = |
-|  .   +o ++ + . o|
-|   ..oooo.=+ .   |
+|         +o===.*B|
+|        . +++o*=o|
+|      . . o.+*++E|
+|     . * . +o.++*|
+|      + S o ...o+|
+|       . . o .  +|
+|            .  o |
+|              .  |
+|                 |
 +----[SHA256]-----+
-Removing intermediate container ec521a50c28b
- ---> c24a962beb16
+Removing intermediate container edefcd8a374e
+ ---> ab9cd3b57199
 Step 5/6 : VOLUME [ "/sys/fs/cgroup" ]
- ---> Running in fbccc296494e
-Removing intermediate container fbccc296494e
- ---> d724a0a2c316
+ ---> Running in 7804581a0db2
+Removing intermediate container 7804581a0db2
+ ---> bb107f4ef1be
 Step 6/6 : CMD ["/usr/sbin/init"]
- ---> Running in b7ccd0766a89
-Removing intermediate container b7ccd0766a89
- ---> ba5fe6510e6b
-Successfully built ba5fe6510e6b
+ ---> Running in 9f40d76a4fa1
+Removing intermediate container 9f40d76a4fa1
+ ---> 60094fee03f1
+Successfully built 60094fee03f1
 Successfully tagged centos7-ksh:latest
-$ docker run -p 10022:22 -d -it --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:ro --privileged=true centos7-ksh
-$ 
+$ docker run -p 10022:22 -d -it --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:ro --privileged=true --name centos7-ksh centos7-ksh
+1f2bf99c5b5471ad329c5ad703c4f39bb0d7ed4d422a20c3e435c3177b289cbd
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                   NAMES
+1f2bf99c5b54        centos7-ksh         "/usr/sbin/init"    21 seconds ago      Up 20 seconds       0.0.0.0:10022->22/tcp   centos7-ksh
+$ ssh -p 10022 root@localhost
+The authenticity of host '[localhost]:10022 ([::1]:10022)' can't be established.
+ECDSA key fingerprint is SHA256:t3ZRKxupBeteS/q+cjLhUO2CcEwVl/pO07Hc1QLpP68.
+ECDSA key fingerprint is MD5:c6:7e:f6:d7:65:fc:14:cf:4d:46:21:d2:a3:73:26:d7.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[localhost]:10022' (ECDSA) to the list of known hosts.
+root@localhost's password: password
+[root@1f2bf99c5b54 ~]# logout
+$ docker kill centos7-ksh
+centos7-ksh
+$
