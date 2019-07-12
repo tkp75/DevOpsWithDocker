@@ -1,21 +1,27 @@
 $ vi Dockerfile 
 $ docker build -t centos7-ksh .
-Sending build context to Docker daemon  18.43kB
-Step 1/7 : FROM centos:7
+Sending build context to Docker daemon  51.71kB
+Step 1/6 : FROM centos:7
+7: Pulling from library/centos
+8ba884070f61: Pull complete 
+Digest: sha256:a799dd8a2ded4a83484bbae769d97655392b3f86533ceb7dd96bbac929809f3c
+Status: Downloaded newer image for centos:7
  ---> 9f38484d220f
-Step 2/7 : ENV container docker
- ---> Using cache
- ---> 646254058829
-Step 3/7 : EXPOSE 22
- ---> Using cache
- ---> 08ea73c579bb
-Step 4/7 : RUN yum -y update &&     yum -y install ksh.x86_64 vim-enhanced.x86_64 less.x86_64 man-db.x86_64 man-pages.noarch                    openssh.x86_64 openssh-clients.x86_64 openssh-server.x86_64                    openssl.x86_64 certmonger.x86_64 &&     yum clean all &&     rm -f /run/nologin &&     mkdir -p mkdir /var/run/sshd && chmod -rx /var/run/sshd &&     ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' &&     systemctl enable sshd.service &&     systemctl enable systemd-user-sessions.service &&     echo "password" | passwd --stdin root
- ---> Running in 21972a927985
+Step 2/6 : ENV container docker
+ ---> Running in 2fcf8c565c1d
+Removing intermediate container 2fcf8c565c1d
+ ---> e4f0e12561a1
+Step 3/6 : EXPOSE 22
+ ---> Running in b6f41d9f7f1f
+Removing intermediate container b6f41d9f7f1f
+ ---> eefab9ed5126
+Step 4/6 : RUN yum -y update &&     yum -y install ksh.x86_64 vim-enhanced.x86_64 less.x86_64 man-db.x86_64 man-pages.noarch                    openssh.x86_64 openssh-clients.x86_64 openssh-server.x86_64                    openssl.x86_64 certmonger.x86_64 &&     yum clean all &&     echo "password" | passwd --stdin root &&     rm -f /run/nologin &&     mkdir -p mkdir /var/run/sshd && chmod -rx /var/run/sshd &&     ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' &&     (cd /lib/systemd/system/sysinit.target.wants/;      for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done) &&     rm -f /lib/systemd/system/multi-user.target.wants/* &&     rm -f /etc/systemd/system/*.wants/* &&     rm -f /lib/systemd/system/local-fs.target.wants/* &&     rm -f /lib/systemd/system/sockets.target.wants/*udev* &&     rm -f /lib/systemd/system/sockets.target.wants/*initctl* &&     rm -f /lib/systemd/system/basic.target.wants/* &&     rm -f /lib/systemd/system/anaconda.target.wants/* &&     ln -s /lib/systemd/system/sshd.service           /etc/systemd/system/multi-user.target.wants/sshd.service &&     ln -s /lib/systemd/system/systemd-user-sessions.service           /etc/systemd/system/multi-user.target.wants/systemd-user-sessions.service
+ ---> Running in ec521a50c28b
 Loaded plugins: fastestmirror, ovl
 Determining fastest mirrors
- * base: ftp.funet.fi
- * extras: ftp.funet.fi
- * updates: ftp.funet.fi
+ * base: centos.mirror.far.fi
+ * extras: centos.mirror.far.fi
+ * updates: centos.mirror.far.fi
 Resolving Dependencies
 --> Running transaction check
 ---> Package bind-license.noarch 32:9.9.4-73.el7_6 will be updated
@@ -255,9 +261,9 @@ Updated:
 Complete!
 Loaded plugins: fastestmirror, ovl
 Loading mirror speeds from cached hostfile
- * base: ftp.funet.fi
- * extras: ftp.funet.fi
- * updates: ftp.funet.fi
+ * base: centos.mirror.far.fi
+ * extras: centos.mirror.far.fi
+ * updates: centos.mirror.far.fi
 Resolving Dependencies
 --> Running transaction check
 ---> Package certmonger.x86_64 0:0.78.4-10.el7 will be installed
@@ -442,7 +448,7 @@ Total download size: 30 M
 Installed size: 84 M
 Downloading packages:
 --------------------------------------------------------------------------------
-Total                                              9.5 MB/s |  30 MB  00:03     
+Total                                              9.4 MB/s |  30 MB  00:03     
 Running transaction check
 Running transaction test
 Transaction test succeeded
@@ -612,40 +618,36 @@ Complete!
 Loaded plugins: fastestmirror, ovl
 Cleaning repos: base extras updates
 Cleaning up list of fastest mirrors
+Changing password for user root.
+passwd: all authentication tokens updated successfully.
 Generating public/private rsa key pair.
 Your identification has been saved in /etc/ssh/ssh_host_rsa_key.
 Your public key has been saved in /etc/ssh/ssh_host_rsa_key.pub.
 The key fingerprint is:
-SHA256:AA4cr4fnkDrHPUSkpVplQFyAzK0wF5qFdkfJ+5qnrvU root@21972a927985
+SHA256:+vS8d2joKHHK6ypxVec+bVpnzzDAtck5qjHSGJxJFg4 root@ec521a50c28b
 The key's randomart image is:
 +---[RSA 2048]----+
-|o*X*X..          |
-|=B+& =           |
-|=o* = o          |
-| + = . .         |
-|. = + . S        |
-| o B   .         |
-|o o +.o          |
-| o  .+..         |
-|   .oooE         |
+|      E ..       |
+|       o+ .   .  |
+|       =.= . o + |
+|      . = . o *  |
+|     .  S= . o . |
+|  . . ..+ * = =  |
+|   o ..+.. X + = |
+|  .   +o ++ + . o|
+|   ..oooo.=+ .   |
 +----[SHA256]-----+
-Changing password for user root.
-passwd: all authentication tokens updated successfully.
-Removing intermediate container 21972a927985
- ---> 407f4bfe505a
-Step 5/7 : RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); rm -f /lib/systemd/system/multi-user.target.wants/*;rm -f /etc/systemd/system/*.wants/*;rm -f /lib/systemd/system/local-fs.target.wants/*; rm -f /lib/systemd/system/sockets.target.wants/*udev*; rm -f /lib/systemd/system/sockets.target.wants/*initctl*; rm -f /lib/systemd/system/basic.target.wants/*;rm -f /lib/systemd/system/anaconda.target.wants/*;
- ---> Running in fd204aa097ea
-Removing intermediate container fd204aa097ea
- ---> 01d1fa64b30f
-Step 6/7 : VOLUME [ "/sys/fs/cgroup" ]
- ---> Running in c5042c1de7b4
-Removing intermediate container c5042c1de7b4
- ---> 9bbbce35bd55
-Step 7/7 : CMD ["/usr/sbin/init"]
- ---> Running in 61749063ab02
-Removing intermediate container 61749063ab02
- ---> 9d9b9594c151
-Successfully built 9d9b9594c151
+Removing intermediate container ec521a50c28b
+ ---> c24a962beb16
+Step 5/6 : VOLUME [ "/sys/fs/cgroup" ]
+ ---> Running in fbccc296494e
+Removing intermediate container fbccc296494e
+ ---> d724a0a2c316
+Step 6/6 : CMD ["/usr/sbin/init"]
+ ---> Running in b7ccd0766a89
+Removing intermediate container b7ccd0766a89
+ ---> ba5fe6510e6b
+Successfully built ba5fe6510e6b
 Successfully tagged centos7-ksh:latest
 $ docker run -p 10022:22 -d -it --tmpfs /run --tmpfs /tmp -v /sys/fs/cgroup:/sys/fs/cgroup:ro --privileged=true centos7-ksh
 $ 
