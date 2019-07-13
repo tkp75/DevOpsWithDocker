@@ -1,3 +1,5 @@
+Secret message: This is the secret message
+Command used:
 $ docker run -it devopsdockeruh/pull_exercise
 Unable to find image 'devopsdockeruh/pull_exercise:latest' locally
 latest: Pulling from devopsdockeruh/pull_exercise
