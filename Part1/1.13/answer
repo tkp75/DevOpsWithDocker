@@ -1,13 +1,5 @@
-$ cd backend-example-docker
-$ vi Dockerfile
-$ docker build -t backend-example .
-$ docker volume create --driver local --name=backend_logs
-$ docker run -d -p 8000:8000 -v backend_logs:/home/node/logs --name backend backend-example
-
-$ cd ../frontend-example-docker
-$ vi Dockerfile
-$ docker build -t frontend-example .
-$ docker volume create --driver local --name=frontend_logs
-$ docker run -d -p 5000:5000 -v frontend_logs:/home/node/logs --name frontend frontend-example
-
-$ firefox http://localhost:5000 &
+$ docker build -t spring-example .
+$ docker run -d -p 8080:8080 --name spring spring-example
+$ docker logs --tail 1 spring
+2019-07-07 16:01:03.594  INFO 6 --- [           main] c.d.dockerexample.DemoApplication        : Started DemoApplication in 4.235 seconds (JVM running for 4.873)
+$ firefox http://localhost:8080 &
