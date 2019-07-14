@@ -1,0 +1,2 @@
+Linux compatible docker-compose.yml file has been added to this directory.
+"docker-compose up" expects logs.txt to pre-exist, hence an empty log file has been added to this directory.

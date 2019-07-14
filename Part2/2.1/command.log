@@ -1,1 +1,55 @@
 $ docker-compose up
+Deleted Containers:
+f32c1c5667824d3bf56c19ce78a6fd785e5f195a8be220960e4a9dfc3e6bbfd8
+
+Deleted Networks:
+21_default
+
+Deleted Images:
+untagged: devopsdockeruh/first_volume_exercise:latest
+untagged: devopsdockeruh/first_volume_exercise@sha256:0fe91ae116a340214cf013541bd311da7196d34a468e9daf74a8d0fdd3419c78
+deleted: sha256:072775acf05ae64e3ffde5c68d5479018ce48939290fd8f0ab6e363c39012ac2
+deleted: sha256:8b966bf747a5011f420ce89b6526d718bc7ac740608c2f461b5fe727122a0237
+deleted: sha256:7a1172cde2c65d940db89566d27cef602386c13eeb301aa074840ab392d2208f
+deleted: sha256:83da39057870ebfa6f036b386e7d2c103c093ffeb398dc314900d92905715baa
+deleted: sha256:08d50bbe2f6ceaf74b9c10a510ab2308ee6e6355e898c69c17d4331d4388106a
+deleted: sha256:c813ddc496920ebe32b6966614b95a8c4a51db9037a141765bbdd75f36f79156
+deleted: sha256:6fbd9662db012d50f620a1444c898914c09b7377285a35d7ac6e2b1d0db85a8f
+deleted: sha256:39496f7d4f99c499b3c87643953d7b5243cc8a05ed9aad9cf1f404633cf4f8ea
+deleted: sha256:ac00eef3f557ea71d47b65f3112c0c3b6ae7113153b7205a94bedc496103a6c8
+deleted: sha256:8f0ebc672b43403012c586feeac72ec83ce8347faab22a2826b952968aefc3d6
+deleted: sha256:13d5529fd232cacdd8cd561148560e0bf5d65dbc1149faf0c68240985607c303
+
+Total reclaimed space: 897.4MB
+[tpakarin@centos7 2.1]$ git commit -m "2.1: logs.txt added"
+[master f6b3f12] 2.1: logs.txt added
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+ create mode 100644 Part2/2.1/logs.txt
+[tpakarin@centos7 2.1]$ docker-compose up
+Creating network "21_default" with the default driver
+Pulling first_volume_exercise (devopsdockeruh/first_volume_exercise:)...
+latest: Pulling from devopsdockeruh/first_volume_exercise
+741437d97401: Pull complete
+34d8874714d7: Pull complete
+0a108aa26679: Pull complete
+7f0334c36886: Pull complete
+65c95cb8b3be: Pull complete
+a36b708560f8: Pull complete
+4090f912e6c7: Pull complete
+ce5fe2607c2e: Pull complete
+9400f5f657d6: Pull complete
+3ccbeb634bca: Pull complete
+Digest: sha256:0fe91ae116a340214cf013541bd311da7196d34a468e9daf74a8d0fdd3419c78
+Status: Downloaded newer image for devopsdockeruh/first_volume_exercise:latest
+Creating first_volume_exercise ... done
+Attaching to first_volume_exercise
+first_volume_exercise    | (node:1) ExperimentalWarning: The fs.promises API is experimental
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+first_volume_exercise    | Wrote to file /usr/app/logs.txt
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping first_volume_exercise ... done
+$
