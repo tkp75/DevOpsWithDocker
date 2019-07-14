@@ -1,0 +1,23 @@
+version: "3"
+services: 
+    backend: 
+      build:
+        context: .
+        dockerfile: Dockerfile.backend
+      ports: 
+        - 8000:8000
+      volumes:
+       - backend_logs:/home/node/logs
+    frontend: 
+      build:
+        context: .
+        dockerfile: Dockerfile.frontend
+      depends_on:
+        - backend
+      ports: 
+        - 5000:5000
+      volumes:
+        - frontend_logs:/home/node/logs
+volumes:
+  backend_logs:
+  frontend_logs:
