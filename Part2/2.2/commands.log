@@ -1,0 +1,25 @@
+$ docker-compose up
+Creating network "22_default" with the default driver
+Pulling ports_exercise (devopsdockeruh/ports_exercise:)...
+latest: Pulling from devopsdockeruh/ports_exercise
+cd784148e348: Pull complete
+9abca35fefbf: Pull complete
+7fc670963d22: Pull complete
+893040f9bc16: Pull complete
+b0ae6401e570: Pull complete
+Digest: sha256:2ff93dd0c744aee7a8f00bc9558d09fd6279493da0d01769fe600f78fb4593f2
+Status: Downloaded newer image for devopsdockeruh/ports_exercise:latest
+Creating 22_ports_exercise_1 ... done
+Attaching to 22_ports_exercise_1
+ports_exercise_1  | 
+ports_exercise_1  | > ports_exercise@1.0.0 start /usr/app
+ports_exercise_1  | > node index.js
+ports_exercise_1  | 
+ports_exercise_1  | Listening on port 80, this means inside of the container. Use -p to map the port to a port of your local machine.
+##### from second window
+$ curl -o- http://localhost:8080/
+Ports configured correctly!!
+#####
+^c
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping 22_ports_exercise_1 ... done
