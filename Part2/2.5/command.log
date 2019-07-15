@@ -1,0 +1,332 @@
+$ docker-compose up
+Creating network "25_default" with the default driver
+Pulling redis (redis:)...
+latest: Pulling from library/redis
+f5d23c7fed46: Pull complete
+a4a5c04dafc1: Pull complete
+605bafc84bc9: Pull complete
+f07a4e35cd96: Pull complete
+17944e5e3eb7: Pull complete
+6f875a8605e0: Pull complete
+Digest: sha256:8888f6cd2509062a377e903e17777b4a6d59c92769f6807f034fa345da9eebcf
+Status: Downloaded newer image for redis:latest
+Building backend
+Step 1/7 : FROM node
+latest: Pulling from library/node
+a4d8138d0f6b: Pull complete
+dbdc36973392: Pull complete
+f59d6d019dd5: Pull complete
+aaef3e026258: Pull complete
+6e454d3b6c28: Pull complete
+c717a7c205aa: Pull complete
+e8566b4564fe: Pull complete
+04239395be03: Pull complete
+27ace7d95321: Pull complete
+Digest: sha256:6e64f63a663a368cc81b28ed3c3e29e6b3784c04f0128be5aaa659157ed4d231
+Status: Downloaded newer image for node:latest
+ ---> 7c412a558705
+Step 2/7 : EXPOSE 8000
+ ---> Running in 51cedc874e85
+Removing intermediate container 51cedc874e85
+ ---> ecadc2bd3772
+Step 3/7 : ENV FRONT_URL=http://localhost:5000
+ ---> Running in 4485eddd6e36
+Removing intermediate container 4485eddd6e36
+ ---> 2f7e59faf01d
+Step 4/7 : WORKDIR /home/node/
+ ---> Running in 031c9f00febb
+Removing intermediate container 031c9f00febb
+ ---> e25cc1f5b5d0
+Step 5/7 : RUN wget https://github.com/docker-hy/backend-example-docker/archive/master.zip &&     unzip master.zip &&     mv -f backend-example-docker-master/* . &&     rm -fr master.zip backend-example-docker-master &&     mkdir logs &&     mv -f logs.txt logs/ &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     chown -R node:node .
+ ---> Running in f196cfb4afff
+--2019-07-15 14:51:45--  https://github.com/docker-hy/backend-example-docker/archive/master.zip
+Resolving github.com (github.com)... 140.82.118.4
+Connecting to github.com (github.com)|140.82.118.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/docker-hy/backend-example-docker/zip/master [following]
+--2019-07-15 14:51:45--  https://codeload.github.com/docker-hy/backend-example-docker/zip/master
+Resolving codeload.github.com (codeload.github.com)... 140.82.114.10
+Connecting to codeload.github.com (codeload.github.com)|140.82.114.10|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: 'master.zip'
+
+     0K .......... .......... .......... .......... ..........  118K
+    50K ...                                                    4.65M=0.4s
+
+2019-07-15 14:51:47 (125 KB/s) - 'master.zip' saved [54304]
+
+Archive:  master.zip
+fb33e1fca953fabd43c429e5b3f53d3a1e17baff
+   creating: backend-example-docker-master/
+  inflating: backend-example-docker-master/.gitignore  
+  inflating: backend-example-docker-master/README.md  
+  inflating: backend-example-docker-master/config.js  
+  inflating: backend-example-docker-master/index.js  
+ extracting: backend-example-docker-master/logs.txt  
+  inflating: backend-example-docker-master/package-lock.json  
+  inflating: backend-example-docker-master/package.json  
+   creating: backend-example-docker-master/server/
+   creating: backend-example-docker-master/server/controllers/
+  inflating: backend-example-docker-master/server/controllers/messageController.js  
+   creating: backend-example-docker-master/server/database/
+  inflating: backend-example-docker-master/server/database/connection.js  
+  inflating: backend-example-docker-master/server/index.js  
+   creating: backend-example-docker-master/server/models/
+  inflating: backend-example-docker-master/server/models/message.js  
+  inflating: backend-example-docker-master/server/redis.js  
+  inflating: backend-example-docker-master/server/routes.js  
+Removing intermediate container f196cfb4afff
+ ---> 9afb8959b95f
+Step 6/7 : RUN npm install
+ ---> Running in dd04147dffa3
+
+> nodemon@1.18.9 postinstall /home/node/node_modules/nodemon
+> node bin/postinstall || exit 0
+
+Love nodemon? You can now support the project via the open collective:
+ > https://opencollective.com/nodemon/donate
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.4 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 606 packages from 458 contributors and audited 5317 packages in 12.352s
+found 37 vulnerabilities (1 moderate, 36 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container dd04147dffa3
+ ---> 97b89dc3745f
+Step 7/7 : CMD npm start
+ ---> Running in 7422037f04fb
+Removing intermediate container 7422037f04fb
+ ---> 9f557bd7b11f
+Successfully built 9f557bd7b11f
+Successfully tagged 25_backend:latest
+WARNING: Image for service backend was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building frontend
+Step 1/7 : FROM node
+ ---> 7c412a558705
+Step 2/7 : EXPOSE 5000
+ ---> Running in 63b8aaed08ae
+Removing intermediate container 63b8aaed08ae
+ ---> 848c2b03ebfe
+Step 3/7 : ENV API_URL=http://localhost:8000
+ ---> Running in 8c72f6da4b36
+Removing intermediate container 8c72f6da4b36
+ ---> 70b128bf2390
+Step 4/7 : WORKDIR /home/node/
+ ---> Running in ca7918f1b278
+Removing intermediate container ca7918f1b278
+ ---> dc3f7e6f9c3b
+Step 5/7 : RUN wget https://github.com/docker-hy/frontend-example-docker/archive/master.zip &&     unzip master.zip &&     mv -f frontend-example-docker-master/* . &&     rm -fr master.zip frontend-example-docker-master &&     mkdir logs &&     touch /home/node/logs/logs.txt &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     chown -R node:node .
+ ---> Running in f1ea5d75e3e4
+--2019-07-15 14:52:08--  https://github.com/docker-hy/frontend-example-docker/archive/master.zip
+Resolving github.com (github.com)... 140.82.118.4
+Connecting to github.com (github.com)|140.82.118.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/docker-hy/frontend-example-docker/zip/master [following]
+--2019-07-15 14:52:08--  https://codeload.github.com/docker-hy/frontend-example-docker/zip/master
+Resolving codeload.github.com (codeload.github.com)... 140.82.114.10
+Connecting to codeload.github.com (codeload.github.com)|140.82.114.10|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: 'master.zip'
+
+     0K .......... .......... .......... .......... ..........  162K
+    50K .......... .......... .......... .......... ..........  247K
+   100K .                                                      21.5M=0.5s
+
+2019-07-15 14:52:10 (199 KB/s) - 'master.zip' saved [104069]
+
+Archive:  master.zip
+c7fbf423d5ad397669cec1f0d8471df44e96fe9b
+   creating: frontend-example-docker-master/
+  inflating: frontend-example-docker-master/.gitignore  
+  inflating: frontend-example-docker-master/README.md  
+  inflating: frontend-example-docker-master/config.js  
+  inflating: frontend-example-docker-master/package-lock.json  
+  inflating: frontend-example-docker-master/package.json  
+   creating: frontend-example-docker-master/src/
+   creating: frontend-example-docker-master/src/assets/
+  inflating: frontend-example-docker-master/src/assets/custom.css  
+  inflating: frontend-example-docker-master/src/assets/toscalogo_black.svg  
+  inflating: frontend-example-docker-master/src/assets/toscalogo_color.svg  
+  inflating: frontend-example-docker-master/src/assets/toscalogo_grayscale.svg  
+  inflating: frontend-example-docker-master/src/assets/toscalogo_white.svg  
+   creating: frontend-example-docker-master/src/components/
+  inflating: frontend-example-docker-master/src/components/App.js  
+   creating: frontend-example-docker-master/src/components/ExercisesList/
+  inflating: frontend-example-docker-master/src/components/ExercisesList/ExerciseAmIRunning.js  
+  inflating: frontend-example-docker-master/src/components/ExercisesList/ExerciseBackendConnection.js  
+  inflating: frontend-example-docker-master/src/components/ExercisesList/ExerciseDBConnection.js  
+  inflating: frontend-example-docker-master/src/components/ExercisesList/ExerciseNginxSetup.js  
+  inflating: frontend-example-docker-master/src/components/ExercisesList/ExerciseRedisSetup.js  
+  inflating: frontend-example-docker-master/src/components/ExercisesList/index.js  
+  inflating: frontend-example-docker-master/src/components/Footer.js  
+  inflating: frontend-example-docker-master/src/components/NavBar.js  
+  inflating: frontend-example-docker-master/src/components/OnlyView.js  
+  inflating: frontend-example-docker-master/src/components/Router.js  
+  inflating: frontend-example-docker-master/src/index.js  
+   creating: frontend-example-docker-master/src/util/
+  inflating: frontend-example-docker-master/src/util/apiConnection.js  
+  inflating: frontend-example-docker-master/src/util/common.js  
+   creating: frontend-example-docker-master/src/util/redux/
+  inflating: frontend-example-docker-master/src/util/redux/index.js  
+  inflating: frontend-example-docker-master/src/util/redux/messageReducer.js  
+  inflating: frontend-example-docker-master/src/util/redux/simpleReducer.js  
+  inflating: frontend-example-docker-master/src/util/store.js  
+   creating: frontend-example-docker-master/util/
+  inflating: frontend-example-docker-master/util/common.js  
+  inflating: frontend-example-docker-master/webpack.config.js  
+Removing intermediate container f1ea5d75e3e4
+ ---> 85fbee2e8641
+Step 6/7 : RUN npm install
+ ---> Running in eaa975a1e9e6
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1029 packages from 415 contributors and audited 11636 packages in 22.003s
+found 117 vulnerabilities (4 moderate, 113 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container eaa975a1e9e6
+ ---> 63f81cc0cef1
+Step 7/7 : CMD npm start
+ ---> Running in b04d4d2c9061
+Removing intermediate container b04d4d2c9061
+ ---> 1ca047261b1b
+Successfully built 1ca047261b1b
+Successfully tagged 25_frontend:latest
+WARNING: Image for service frontend was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating 25_redis_1 ... done
+Creating 25_backend_1 ... done
+Creating 25_frontend_1 ... done
+Attaching to 25_redis_1, 25_backend_1, 25_frontend_1
+redis_1     | 1:C 15 Jul 2019 14:52:53.418 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1     | 1:C 15 Jul 2019 14:52:53.418 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1     | 1:C 15 Jul 2019 14:52:53.418 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 * Running mode=standalone, port=6379.
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 # Server initialized
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1     | 1:M 15 Jul 2019 14:52:53.421 * Ready to accept connections
+backend_1   | 
+backend_1   | > backend-example-docker@1.0.0 start /home/node
+backend_1   | > cross-env NODE_ENV=production node index.js
+backend_1   | 
+frontend_1  | 
+frontend_1  | > frontend-example-docker@1.0.0 start /home/node
+frontend_1  | > webpack --mode production && serve -s -l 5000 dist
+frontend_1  | 
+backend_1   | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+backend_1   | Redis connection, initating..
+backend_1   | Trying to set cache
+backend_1   | Cache set successfully
+backend_1   | Started on port 8000
+frontend_1  | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+frontend_1  | Hash: 911fabf0ade928ef0b95
+frontend_1  | Version: webpack 4.29.6
+frontend_1  | Time: 29895ms
+frontend_1  | Built at: 07/15/2019 2:53:29 PM
+frontend_1  |                                  Asset       Size  Chunks                    Chunk Names
+frontend_1  | 0ab54153eeeca0ce03978cc463b257f7.woff2   39.2 KiB          [emitted]         
+frontend_1  |   13db00b7a34fee4d819ab7f9838cc428.eot   96.3 KiB          [emitted]         
+frontend_1  |   701ae6abd4719e9c2ada3535a497b341.eot   30.4 KiB          [emitted]         
+frontend_1  |   82f60bd0b94a1ed68b1e6e309ce2e8c3.svg    105 KiB          [emitted]         
+frontend_1  |   8e3c7f5520f5ae906c6cf6d7f3ddcd19.eot    104 KiB          [emitted]         
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg    382 KiB          [emitted]  [big]  
+frontend_1  |   9c74e172f87984c48ddf5c8108cabe67.png   27.5 KiB          [emitted]         
+frontend_1  |  a046592bac8f2fd96e994733faf3858c.woff   62.2 KiB          [emitted]         
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg    496 KiB          [emitted]  [big]  
+frontend_1  |   a3e2211dddcba197b5bbf2aa9d5d9a9a.svg   3.19 KiB          [emitted]         
+frontend_1  |   ad97afd3337e8cda302d10ff5a4026b8.ttf   30.2 KiB          [emitted]         
+frontend_1  |   b87b9ba532ace76ae9f6edfe9f72ded2.ttf    103 KiB          [emitted]         
+frontend_1  |   bff6c47a9da5c7cfa2e8a552e2df3a78.svg    3.2 KiB          [emitted]         
+frontend_1  |   c5ebe0b32dc1b5cc449a76c4204d13bb.ttf   96.1 KiB          [emitted]         
+frontend_1  | cd6c777f1945164224dee082abaea03a.woff2     12 KiB          [emitted]         
+frontend_1  | e8c322de9658cbeb8a774b6624167c2c.woff2   53.2 KiB          [emitted]         
+frontend_1  |  ef60a4f6c25ef7f39f2d25a748dbecfe.woff   14.4 KiB          [emitted]         
+frontend_1  |  faff92145777a3cbaf8e7367b4807987.woff   49.3 KiB          [emitted]         
+frontend_1  |                             index.html  454 bytes          [emitted]         
+frontend_1  |                               main.css  127 bytes       0  [emitted]         main
+frontend_1  |                                main.js   19.2 KiB       0  [emitted]         main
+frontend_1  |                     vendors~main-1.css    602 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  |                        vendors~main.js    328 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  | Entrypoint main [big] = vendors~main-1.css vendors~main.js main.css main.js
+frontend_1  |   [7] ./node_modules/semantic-ui-react/dist/es/lib/index.js + 1 modules 2.94 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [51] ./node_modules/semantic-ui-react/dist/es/elements/Icon/Icon.js + 1 modules 6.22 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [80] ./node_modules/react-redux/es/index.js + 19 modules 36.2 KiB {1} [built]
+frontend_1  |       |    20 modules
+frontend_1  |  [93] ./node_modules/semantic-ui-react/dist/es/elements/Label/Label.js + 2 modules 10.6 KiB {1} [built]
+frontend_1  |       |    3 modules
+frontend_1  |  [94] (webpack)/buildin/global.js 472 bytes {1} [built]
+frontend_1  | [246] ./src/assets/toscalogo_color.svg 82 bytes {0} [built]
+frontend_1  | [247] ./src/assets/toscalogo_grayscale.svg 82 bytes {0} [built]
+frontend_1  | [266] multi @babel/polyfill ./src 40 bytes {0} [built]
+frontend_1  | [446] (webpack)/buildin/harmony-module.js 573 bytes {1} [built]
+frontend_1  | [448] ./src/assets/custom.css 39 bytes {0} [built]
+frontend_1  | [585] ./src/index.js + 18 modules 37.8 KiB {0} [built]
+frontend_1  |       | ./src/index.js 569 bytes [built]
+frontend_1  |       | ./src/util/store.js 481 bytes [built]
+frontend_1  |       | ./util/common.js 117 bytes [built]
+frontend_1  |       | ./src/util/apiConnection.js 4.7 KiB [built]
+frontend_1  |       | ./src/util/redux/index.js 219 bytes [built]
+frontend_1  |       | ./src/util/redux/messageReducer.js 1.76 KiB [built]
+frontend_1  |       | ./src/util/redux/simpleReducer.js 1.47 KiB [built]
+frontend_1  |       | ./src/util/common.js 221 bytes [built]
+frontend_1  |       |     + 11 hidden modules
+frontend_1  | [586] ./node_modules/semantic-ui-react/dist/es/elements/Button/Button.js + 3 modules 17.7 KiB {1} [built]
+frontend_1  |       |    4 modules
+frontend_1  | [594] ./node_modules/react-router-dom/es/BrowserRouter.js + 12 modules 41 KiB {1} [built]
+frontend_1  |       |    13 modules
+frontend_1  | [596] ./node_modules/react-router-dom/es/Switch.js + 1 modules 3.35 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  | [597] ./node_modules/react-router-dom/es/Route.js + 1 modules 5.9 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |     + 971 hidden modules
+frontend_1  | 
+frontend_1  | WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+frontend_1  | This can impact web performance.
+frontend_1  | Assets: 
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg (382 KiB)
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg (496 KiB)
+frontend_1  |   vendors~main-1.css (602 KiB)
+frontend_1  |   vendors~main.js (328 KiB)
+frontend_1  | 
+frontend_1  | WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+frontend_1  | Entrypoints:
+frontend_1  |   main (949 KiB)
+frontend_1  |       vendors~main-1.css
+frontend_1  |       vendors~main.js
+frontend_1  |       main.css
+frontend_1  |       main.js
+frontend_1  | 
+frontend_1  | 
+frontend_1  | WARNING in webpack performance recommendations: 
+frontend_1  | You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+frontend_1  | For more info visit https://webpack.js.org/guides/code-splitting/
+frontend_1  | Child html-webpack-plugin for "index.html":
+frontend_1  |      1 asset
+frontend_1  |     Entrypoint undefined = index.html
+frontend_1  |     [2] (webpack)/buildin/global.js 472 bytes {0} [built]
+frontend_1  |     [3] (webpack)/buildin/module.js 497 bytes {0} [built]
+frontend_1  |         + 2 hidden modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/semantic-ui-css/semantic.min.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |        19 modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!src/assets/custom.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |     [0] ./node_modules/css-loader!./src/assets/custom.css 340 bytes {0} [built]
+frontend_1  |         + 1 hidden module
+frontend_1  | UPDATE AVAILABLE The latest version of `serve` is 11.1.0
+frontend_1  | INFO: Accepting connections at http://localhost:5000
+##### From another console
+$ firefox http://localhost:5000 &
+#####
+backend_1   | Got from redis pong
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping 25_frontend_1 ... done
+Stopping 25_backend_1  ... done
+Stopping 25_redis_1    ... done
+$
