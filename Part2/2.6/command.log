@@ -1,0 +1,266 @@
+$ docker-compose up
+Creating network "26_default" with the default driver
+Creating volume "26_backend_logs" with default driver
+Creating volume "26_frontend_logs" with default driver
+Pulling db (postgres:)...
+latest: Pulling from library/postgres
+fc7181108d40: Pull complete
+81cfa12d39e9: Pull complete
+793d305ca761: Pull complete
+d1465f4e119c: Pull complete
+32ecb3afd85d: Pull complete
+e79a18e1d8ce: Pull complete
+c9527f80b877: Pull complete
+ab10bee9b69f: Pull complete
+09a75880a8c5: Pull complete
+18ea49310c65: Pull complete
+de2df000424a: Pull complete
+607cd2a5b061: Pull complete
+ee8f05b2c352: Pull complete
+221f9382c4d3: Pull complete
+Digest: sha256:615f97884cb9cdd9226bd6c5cf4d8a62cc1255c36c1df0b5e3571d1803747c9c
+Status: Downloaded newer image for postgres:latest
+Building backend
+Step 1/7 : FROM node
+ ---> 7c412a558705
+Step 2/7 : EXPOSE 8000
+ ---> Using cache
+ ---> ecadc2bd3772
+Step 3/7 : ENV FRONT_URL=http://localhost:5000
+ ---> Using cache
+ ---> 2f7e59faf01d
+Step 4/7 : WORKDIR /home/node/
+ ---> Using cache
+ ---> e25cc1f5b5d0
+Step 5/7 : RUN wget https://github.com/docker-hy/backend-example-docker/archive/master.zip &&     unzip master.zip &&     mv -f backend-example-docker-master/* . &&     rm -fr master.zip backend-example-docker-master &&     mkdir logs &&     mv -f logs.txt logs/ &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     chown -R node:node .
+ ---> Using cache
+ ---> 9afb8959b95f
+Step 6/7 : RUN npm install
+ ---> Using cache
+ ---> 97b89dc3745f
+Step 7/7 : CMD npm start
+ ---> Using cache
+ ---> 9f557bd7b11f
+Successfully built 9f557bd7b11f
+Successfully tagged 26_backend:latest
+WARNING: Image for service backend was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building frontend
+Step 1/7 : FROM node
+ ---> 7c412a558705
+Step 2/7 : EXPOSE 5000
+ ---> Using cache
+ ---> 848c2b03ebfe
+Step 3/7 : ENV API_URL=http://localhost:8000
+ ---> Using cache
+ ---> 70b128bf2390
+Step 4/7 : WORKDIR /home/node/
+ ---> Using cache
+ ---> dc3f7e6f9c3b
+Step 5/7 : RUN wget https://github.com/docker-hy/frontend-example-docker/archive/master.zip &&     unzip master.zip &&     mv -f frontend-example-docker-master/* . &&     rm -fr master.zip frontend-example-docker-master &&     mkdir logs &&     touch /home/node/logs/logs.txt &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     chown -R node:node .
+ ---> Using cache
+ ---> 85fbee2e8641
+Step 6/7 : RUN npm install
+ ---> Using cache
+ ---> 63f81cc0cef1
+Step 7/7 : CMD npm start
+ ---> Using cache
+ ---> 1ca047261b1b
+Successfully built 1ca047261b1b
+Successfully tagged 26_frontend:latest
+WARNING: Image for service frontend was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating db         ... done
+Creating 26_redis_1 ... done
+Creating 26_backend_1 ... done
+Creating 26_frontend_1 ... done
+Attaching to db, 26_redis_1, 26_backend_1, 26_frontend_1
+db          | The files belonging to this database system will be owned by user "postgres".
+db          | This user must also own the server process.
+db          | 
+db          | The database cluster will be initialized with locale "en_US.utf8".
+db          | The default database encoding has accordingly been set to "UTF8".
+db          | The default text search configuration will be set to "english".
+db          | 
+db          | Data page checksums are disabled.
+db          | 
+db          | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db          | creating subdirectories ... ok
+db          | selecting default max_connections ... 100
+db          | selecting default shared_buffers ... 128MB
+db          | selecting default timezone ... Etc/UTC
+db          | selecting dynamic shared memory implementation ... posix
+db          | creating configuration files ... ok
+db          | running bootstrap script ... ok
+db          | performing post-bootstrap initialization ... ok
+redis_1     | 1:C 15 Jul 2019 19:52:33.756 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1     | 1:C 15 Jul 2019 19:52:33.756 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1     | 1:C 15 Jul 2019 19:52:33.756 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 * Running mode=standalone, port=6379.
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 # Server initialized
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1     | 1:M 15 Jul 2019 19:52:33.758 * Ready to accept connections
+db          | syncing data to disk ... ok
+db          | 
+db          | Success. You can now start the database server using:
+db          | 
+db          |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db          | 
+db          | 
+db          | WARNING: enabling "trust" authentication for local connections
+db          | You can change this by editing pg_hba.conf or using the option -A, or
+db          | --auth-local and --auth-host, the next time you run initdb.
+backend_1   | 
+backend_1   | > backend-example-docker@1.0.0 start /home/node
+backend_1   | > cross-env NODE_ENV=production node index.js
+backend_1   | 
+db          | waiting for server to start....2019-07-15 19:52:36.261 UTC [41] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+frontend_1  | 
+frontend_1  | > frontend-example-docker@1.0.0 start /home/node
+frontend_1  | > webpack --mode production && serve -s -l 5000 dist
+frontend_1  | 
+db          | 2019-07-15 19:52:36.310 UTC [42] LOG:  database system was shut down at 2019-07-15 19:52:35 UTC
+db          | 2019-07-15 19:52:36.317 UTC [41] LOG:  database system is ready to accept connections
+db          |  done
+db          | server started
+db          | 
+db          | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+db          | 
+db          | waiting for server to shut down....2019-07-15 19:52:36.323 UTC [41] LOG:  received fast shutdown request
+db          | 2019-07-15 19:52:36.325 UTC [41] LOG:  aborting any active transactions
+db          | 2019-07-15 19:52:36.335 UTC [41] LOG:  background worker "logical replication launcher" (PID 48) exited with exit code 1
+db          | 2019-07-15 19:52:36.344 UTC [43] LOG:  shutting down
+db          | 2019-07-15 19:52:36.382 UTC [41] LOG:  database system is shut down
+db          |  done
+db          | server stopped
+db          | 
+db          | PostgreSQL init process complete; ready for start up.
+db          | 
+db          | 2019-07-15 19:52:36.442 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db          | 2019-07-15 19:52:36.442 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db          | 2019-07-15 19:52:36.449 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db          | 2019-07-15 19:52:36.472 UTC [50] LOG:  database system was shut down at 2019-07-15 19:52:36 UTC
+db          | 2019-07-15 19:52:36.479 UTC [1] LOG:  database system is ready to accept connections
+backend_1   | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+backend_1   | Mon, 15 Jul 2019 19:52:39 GMT sequelize deprecated String based operators are now deprecated. Please use Symbol based operators for better security, read more at http://docs.sequelizejs.com/manual/tutorial/querying.html#operators at node_modules/sequelize/lib/sequelize.js:242:13
+backend_1   | Testing database connection
+backend_1   | Redis connection, initating..
+backend_1   | Trying to set cache
+backend_1   | Cache set successfully
+backend_1   | Started on port 8000
+backend_1   | Executing (default): SELECT 1+1 AS result
+backend_1   | Connection ok, syncing database with model.
+backend_1   | Executing (default): CREATE TABLE IF NOT EXISTS "messages" ("id"   SERIAL , "body" VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));
+backend_1   | Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'messages' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+backend_1   | Database connection established!
+frontend_1  | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+frontend_1  | Hash: 911fabf0ade928ef0b95
+frontend_1  | Version: webpack 4.29.6
+frontend_1  | Time: 27072ms
+frontend_1  | Built at: 07/15/2019 7:53:11 PM
+frontend_1  |                                  Asset       Size  Chunks                    Chunk Names
+frontend_1  | 0ab54153eeeca0ce03978cc463b257f7.woff2   39.2 KiB          [emitted]         
+frontend_1  |   13db00b7a34fee4d819ab7f9838cc428.eot   96.3 KiB          [emitted]         
+frontend_1  |   701ae6abd4719e9c2ada3535a497b341.eot   30.4 KiB          [emitted]         
+frontend_1  |   82f60bd0b94a1ed68b1e6e309ce2e8c3.svg    105 KiB          [emitted]         
+frontend_1  |   8e3c7f5520f5ae906c6cf6d7f3ddcd19.eot    104 KiB          [emitted]         
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg    382 KiB          [emitted]  [big]  
+frontend_1  |   9c74e172f87984c48ddf5c8108cabe67.png   27.5 KiB          [emitted]         
+frontend_1  |  a046592bac8f2fd96e994733faf3858c.woff   62.2 KiB          [emitted]         
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg    496 KiB          [emitted]  [big]  
+frontend_1  |   a3e2211dddcba197b5bbf2aa9d5d9a9a.svg   3.19 KiB          [emitted]         
+frontend_1  |   ad97afd3337e8cda302d10ff5a4026b8.ttf   30.2 KiB          [emitted]         
+frontend_1  |   b87b9ba532ace76ae9f6edfe9f72ded2.ttf    103 KiB          [emitted]         
+frontend_1  |   bff6c47a9da5c7cfa2e8a552e2df3a78.svg    3.2 KiB          [emitted]         
+frontend_1  |   c5ebe0b32dc1b5cc449a76c4204d13bb.ttf   96.1 KiB          [emitted]         
+frontend_1  | cd6c777f1945164224dee082abaea03a.woff2     12 KiB          [emitted]         
+frontend_1  | e8c322de9658cbeb8a774b6624167c2c.woff2   53.2 KiB          [emitted]         
+frontend_1  |  ef60a4f6c25ef7f39f2d25a748dbecfe.woff   14.4 KiB          [emitted]         
+frontend_1  |  faff92145777a3cbaf8e7367b4807987.woff   49.3 KiB          [emitted]         
+frontend_1  |                             index.html  454 bytes          [emitted]         
+frontend_1  |                               main.css  127 bytes       0  [emitted]         main
+frontend_1  |                                main.js   19.2 KiB       0  [emitted]         main
+frontend_1  |                     vendors~main-1.css    602 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  |                        vendors~main.js    328 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  | Entrypoint main [big] = vendors~main-1.css vendors~main.js main.css main.js
+frontend_1  |   [7] ./node_modules/semantic-ui-react/dist/es/lib/index.js + 1 modules 2.94 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [51] ./node_modules/semantic-ui-react/dist/es/elements/Icon/Icon.js + 1 modules 6.22 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [80] ./node_modules/react-redux/es/index.js + 19 modules 36.2 KiB {1} [built]
+frontend_1  |       |    20 modules
+frontend_1  |  [93] ./node_modules/semantic-ui-react/dist/es/elements/Label/Label.js + 2 modules 10.6 KiB {1} [built]
+frontend_1  |       |    3 modules
+frontend_1  |  [94] (webpack)/buildin/global.js 472 bytes {1} [built]
+frontend_1  | [246] ./src/assets/toscalogo_color.svg 82 bytes {0} [built]
+frontend_1  | [247] ./src/assets/toscalogo_grayscale.svg 82 bytes {0} [built]
+frontend_1  | [266] multi @babel/polyfill ./src 40 bytes {0} [built]
+frontend_1  | [446] (webpack)/buildin/harmony-module.js 573 bytes {1} [built]
+frontend_1  | [448] ./src/assets/custom.css 39 bytes {0} [built]
+frontend_1  | [585] ./src/index.js + 18 modules 37.8 KiB {0} [built]
+frontend_1  |       | ./src/index.js 569 bytes [built]
+frontend_1  |       | ./src/util/store.js 481 bytes [built]
+frontend_1  |       | ./util/common.js 117 bytes [built]
+frontend_1  |       | ./src/util/apiConnection.js 4.7 KiB [built]
+frontend_1  |       | ./src/util/redux/index.js 219 bytes [built]
+frontend_1  |       | ./src/util/redux/messageReducer.js 1.76 KiB [built]
+frontend_1  |       | ./src/util/redux/simpleReducer.js 1.47 KiB [built]
+frontend_1  |       | ./src/util/common.js 221 bytes [built]
+frontend_1  |       |     + 11 hidden modules
+frontend_1  | [586] ./node_modules/semantic-ui-react/dist/es/elements/Button/Button.js + 3 modules 17.7 KiB {1} [built]
+frontend_1  |       |    4 modules
+frontend_1  | [594] ./node_modules/react-router-dom/es/BrowserRouter.js + 12 modules 41 KiB {1} [built]
+frontend_1  |       |    13 modules
+frontend_1  | [596] ./node_modules/react-router-dom/es/Switch.js + 1 modules 3.35 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  | [597] ./node_modules/react-router-dom/es/Route.js + 1 modules 5.9 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |     + 971 hidden modules
+frontend_1  | 
+frontend_1  | WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+frontend_1  | This can impact web performance.
+frontend_1  | Assets: 
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg (382 KiB)
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg (496 KiB)
+frontend_1  |   vendors~main-1.css (602 KiB)
+frontend_1  |   vendors~main.js (328 KiB)
+frontend_1  | 
+frontend_1  | WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+frontend_1  | Entrypoints:
+frontend_1  |   main (949 KiB)
+frontend_1  |       vendors~main-1.css
+frontend_1  |       vendors~main.js
+frontend_1  |       main.css
+frontend_1  |       main.js
+frontend_1  | 
+frontend_1  | 
+frontend_1  | WARNING in webpack performance recommendations: 
+frontend_1  | You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+frontend_1  | For more info visit https://webpack.js.org/guides/code-splitting/
+frontend_1  | Child html-webpack-plugin for "index.html":
+frontend_1  |      1 asset
+frontend_1  |     Entrypoint undefined = index.html
+frontend_1  |     [2] (webpack)/buildin/global.js 472 bytes {0} [built]
+frontend_1  |     [3] (webpack)/buildin/module.js 497 bytes {0} [built]
+frontend_1  |         + 2 hidden modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/semantic-ui-css/semantic.min.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |        19 modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!src/assets/custom.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |     [0] ./node_modules/css-loader!./src/assets/custom.css 340 bytes {0} [built]
+frontend_1  |         + 1 hidden module
+frontend_1  | UPDATE AVAILABLE The latest version of `serve` is 11.1.0
+frontend_1  | INFO: Accepting connections at http://localhost:5000
+##### From another console
+$ firefox http://localhost:5000 &
+#####
+backend_1   | Got from redis pong
+backend_1   | Executing (default): INSERT INTO "messages" ("id","body","createdAt","updatedAt") VALUES (DEFAULT,'foo','2019-07-15 19:56:36.224 +00:00','2019-07-15 19:56:36.224 +00:00') RETURNING *;
+backend_1   | Executing (default): SELECT "id", "body", "createdAt", "updatedAt" FROM "messages" AS "message";
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping 26_frontend_1 ... done
+Stopping 26_backend_1  ... done
+Stopping 26_redis_1    ... done
+Stopping db            ... done
+$
