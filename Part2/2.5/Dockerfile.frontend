@@ -1,0 +1,14 @@
+FROM node
+EXPOSE 5000
+ENV API_URL=http://localhost:8000
+WORKDIR /home/node/
+RUN wget https://github.com/docker-hy/frontend-example-docker/archive/master.zip && \
+    unzip master.zip && \
+    mv -f frontend-example-docker-master/* . && \
+    rm -fr master.zip frontend-example-docker-master && \
+    mkdir logs && \
+    touch /home/node/logs/logs.txt && \
+    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    chown -R node:node .
+RUN npm install
+CMD npm start

@@ -1,0 +1,31 @@
+version: "3"
+services: 
+    redis:
+      image: redis
+      expose:
+        - 6379
+    backend: 
+      build:
+        context: .
+        dockerfile: Dockerfile.backend
+      depends_on:
+        - redis
+      ports: 
+        - 8000:8000
+      volumes:
+        - backend_logs:/home/node/logs
+      environment:
+        - REDIS=redis
+    frontend: 
+      build:
+        context: .
+        dockerfile: Dockerfile.frontend
+      depends_on:
+        - backend
+      ports: 
+        - 5000:5000
+      volumes:
+        - frontend_logs:/home/node/logs
+volumes:
+  backend_logs:
+  frontend_logs:
