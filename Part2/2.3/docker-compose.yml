@@ -7,7 +7,7 @@ services:
       ports: 
         - 8000:8000
       volumes:
-       - backend_logs:/home/node/logs
+        - backend_logs:/home/node/logs
     frontend: 
       build:
         context: .
