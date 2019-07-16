@@ -1,26 +1,42 @@
-version: "3"
+version: "3.5"
 services: 
   training:
     build: https://github.com/docker-hy/ml-kurkkumopo-training.git
-    restart: unless-stopped
+    image: kurkkumopo_training
+    restart: on-failure
     volumes:
       - model:/src/model
       - images:/src/imgs
+#    networks:
+#      - kurkkumopo
   backend:
     build: https://github.com/docker-hy/ml-kurkkumopo-backend.git
+    image: kurkkumopo_backend
+#    environment:
+#      - debug=true
     restart: unless-stopped
     depends_on:
       - training
     volumes:
-      - model:/src/model
+      - model:/src/model:ro
+    ports:
+      - 5000:5000
+#    networks:
+#      - kurkkumopo
   frontend: 
     build: https://github.com/docker-hy/ml-kurkkumopo-frontend.git
+    image: kurkkumopo_frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports: 
       - 3000:3000
+#    networks:
+#      - kurkkumopo
 
 volumes:
   model:
   images:
+
+#networks:
+#  kurkkumopo:
