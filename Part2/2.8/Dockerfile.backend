@@ -1,0 +1,14 @@
+FROM node
+EXPOSE 8000
+ENV FRONT_URL=http://localhost:5000
+WORKDIR /home/node/
+RUN wget https://github.com/docker-hy/backend-example-docker/archive/master.zip && \
+    unzip master.zip && \
+    mv -f backend-example-docker-master/* . && \
+    rm -fr master.zip backend-example-docker-master && \
+    mkdir logs && \
+    mv -f logs.txt logs/ && \
+    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    chown -R node:node .
+RUN npm install
+CMD npm start
