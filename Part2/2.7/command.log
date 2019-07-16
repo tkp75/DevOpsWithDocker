@@ -1,1 +1,469 @@
-$ docker-compose up
+$ docker-compose up --build
+Creating network "27_default" with the default driver
+Creating volume "27_model" with default driver
+Creating volume "27_images" with default driver
+Building training
+Step 1/5 : FROM python:3.6.7-slim
+3.6.7-slim: Pulling from library/python
+a5a6f2f73cd8: Pull complete
+3a6fba040982: Pull complete
+973ed4320c0c: Pull complete
+2e4c0b09f607: Pull complete
+c5f847ace1b0: Pull complete
+Digest: sha256:abedac233d506b945b377f3846900b7cebb2f23e724226ee6a59032cb3039057
+Status: Downloaded newer image for python:3.6.7-slim
+ ---> ea57895cf3f9
+Step 2/5 : WORKDIR /src
+ ---> Running in c8b4bfbbb762
+Removing intermediate container c8b4bfbbb762
+ ---> 198fcddcff55
+Step 3/5 : COPY . /src
+ ---> 8263210b9aa8
+Step 4/5 : RUN pip install --trusted-host pypi.python.org -r requirements.txt
+ ---> Running in 03f619ce070a
+Collecting numpy==1.14.5 (from -r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/68/1e/116ad560de97694e2d0c1843a7a0075cc9f49e922454d32f49a80eb6f1f2/numpy-1.14.5-cp36-cp36m-manylinux1_x86_64.whl (12.2MB)
+Collecting pandas==0.23.4 (from -r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/e1/d8/feeb346d41f181e83fba45224ab14a8d8af019b48af742e047f3845d8cff/pandas-0.23.4-cp36-cp36m-manylinux1_x86_64.whl (8.9MB)
+Collecting keras==2.2.4 (from -r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/5e/10/aa32dad071ce52b5502266b5c659451cfd6ffcbf14e6c8c4f16c0ff5aaab/Keras-2.2.4-py2.py3-none-any.whl (312kB)
+Collecting scikit-learn==0.20.0 (from -r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/0c/b2/05be9b6da9ae4a4c54f537be22e95833f722742a02b1e355fdc09363877c/scikit_learn-0.20.0-cp36-cp36m-manylinux1_x86_64.whl (5.3MB)
+Collecting scipy==1.1.0 (from -r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/a8/0b/f163da98d3a01b3e0ef1cab8dd2123c34aee2bafbb1c5bffa354cc8a1730/scipy-1.1.0-cp36-cp36m-manylinux1_x86_64.whl (31.2MB)
+Collecting tensorflow==1.10.1 (from -r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/04/7e/a484776c73b1431f2b077e13801531e966113492552194fe721e6ef88d5d/tensorflow-1.10.1-cp36-cp36m-manylinux1_x86_64.whl (58.4MB)
+Collecting Pillow==5.3.0 (from -r requirements.txt (line 7))
+  Downloading https://files.pythonhosted.org/packages/62/94/5430ebaa83f91cc7a9f687ff5238e26164a779cca2ef9903232268b0a318/Pillow-5.3.0-cp36-cp36m-manylinux1_x86_64.whl (2.0MB)
+Collecting imageio==2.4.1 (from -r requirements.txt (line 8))
+  Downloading https://files.pythonhosted.org/packages/28/b4/cbb592964dfd71a9de6a5b08f882fd334fb99ae09ddc82081dbb2f718c81/imageio-2.4.1.tar.gz (3.3MB)
+Collecting requests==2.20.0 (from -r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/f1/ca/10332a30cb25b627192b4ea272c351bce3ca1091e541245cccbace6051d8/requests-2.20.0-py2.py3-none-any.whl (60kB)
+Collecting matplotlib==2.2.3 (from -r requirements.txt (line 10))
+  Downloading https://files.pythonhosted.org/packages/9e/59/f235ab21bbe7b7c6570c4abf17ffb893071f4fa3b9cf557b09b60359ad9a/matplotlib-2.2.3-cp36-cp36m-manylinux1_x86_64.whl (12.6MB)
+Collecting pytz>=2011k (from pandas==0.23.4->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/3d/73/fe30c2daaaa0713420d0382b16fbb761409f532c56bdcc514bf7b6262bb6/pytz-2019.1-py2.py3-none-any.whl (510kB)
+Collecting python-dateutil>=2.5.0 (from pandas==0.23.4->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/41/17/c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb/python_dateutil-2.8.0-py2.py3-none-any.whl (226kB)
+Collecting six>=1.9.0 (from keras==2.2.4->-r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Collecting keras-applications>=1.0.6 (from keras==2.2.4->-r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/71/e3/19762fdfc62877ae9102edf6342d71b28fbfd9dea3d2f96a882ce099b03f/Keras_Applications-1.0.8-py3-none-any.whl (50kB)
+Collecting keras-preprocessing>=1.0.5 (from keras==2.2.4->-r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/28/6a/8c1f62c37212d9fc441a7e26736df51ce6f0e38455816445471f10da4f0a/Keras_Preprocessing-1.1.0-py2.py3-none-any.whl (41kB)
+Collecting h5py (from keras==2.2.4->-r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/30/99/d7d4fbf2d02bb30fb76179911a250074b55b852d34e98dd452a9f394ac06/h5py-2.9.0-cp36-cp36m-manylinux1_x86_64.whl (2.8MB)
+Collecting pyyaml (from keras==2.2.4->-r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/a3/65/837fefac7475963d1eccf4aa684c23b95aa6c1d033a2c5965ccb11e22623/PyYAML-5.1.1.tar.gz (274kB)
+Requirement already satisfied: wheel>=0.26 in /usr/local/lib/python3.6/site-packages (from tensorflow==1.10.1->-r requirements.txt (line 6)) (0.32.2)
+Collecting tensorboard<1.11.0,>=1.10.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/c6/17/ecd918a004f297955c30b4fffbea100b1606c225dbf0443264012773c3ff/tensorboard-1.10.0-py3-none-any.whl (3.3MB)
+Collecting absl-py>=0.1.6 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/da/3f/9b0355080b81b15ba6a9ffcf1f5ea39e307a2778b2f2dc8694724e8abd5b/absl-py-0.7.1.tar.gz (99kB)
+Collecting gast>=0.2.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/4e/35/11749bf99b2d4e3cceb4d55ca22590b0d7c2c62b9de38ac4a4a7f4687421/gast-0.2.2.tar.gz
+Collecting setuptools<=39.1.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/8c/10/79282747f9169f21c053c562a0baa21815a8c7879be97abd930dbcf862e8/setuptools-39.1.0-py2.py3-none-any.whl (566kB)
+Collecting grpcio>=1.8.6 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/f2/5d/b434403adb2db8853a97828d3d19f2032e79d630e0d11a8e95d243103a11/grpcio-1.22.0-cp36-cp36m-manylinux1_x86_64.whl (2.2MB)
+Collecting astor>=0.6.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/d1/4f/950dfae467b384fc96bc6469de25d832534f6b4441033c39f914efd13418/astor-0.8.0-py2.py3-none-any.whl
+Collecting protobuf>=3.6.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/dc/0e/e7cdff89745986c984ba58e6ff6541bc5c388dd9ab9d7d312b3b1532584a/protobuf-3.9.0-cp36-cp36m-manylinux1_x86_64.whl (1.2MB)
+Collecting termcolor>=1.1.0 (from tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/8a/48/a76be51647d0eb9f10e2a4511bf3ffb8cc1e6b14e9e4fab46173aa79f981/termcolor-1.1.0.tar.gz
+Collecting certifi>=2017.4.17 (from requests==2.20.0->-r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/69/1b/b853c7a9d4f6a6d00749e94eb6f3a041e342a885b87340b79c1ef73e3a78/certifi-2019.6.16-py2.py3-none-any.whl (157kB)
+Collecting urllib3<1.25,>=1.21.1 (from requests==2.20.0->-r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/01/11/525b02e4acc0c747de8b6ccdab376331597c569c42ea66ab0a1dbd36eca2/urllib3-1.24.3-py2.py3-none-any.whl (118kB)
+Collecting idna<2.8,>=2.5 (from requests==2.20.0->-r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/4b/2a/0276479a4b3caeb8a8c1af2f8e4355746a97fab05a372e4a2c6a6b876165/idna-2.7-py2.py3-none-any.whl (58kB)
+Collecting chardet<3.1.0,>=3.0.2 (from requests==2.20.0->-r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl (133kB)
+Collecting kiwisolver>=1.0.1 (from matplotlib==2.2.3->-r requirements.txt (line 10))
+  Downloading https://files.pythonhosted.org/packages/f8/a1/5742b56282449b1c0968197f63eae486eca2c35dcd334bab75ad524e0de1/kiwisolver-1.1.0-cp36-cp36m-manylinux1_x86_64.whl (90kB)
+Collecting pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 (from matplotlib==2.2.3->-r requirements.txt (line 10))
+  Downloading https://files.pythonhosted.org/packages/dd/d9/3ec19e966301a6e25769976999bd7bbe552016f0d32b577dc9d63d2e0c49/pyparsing-2.4.0-py2.py3-none-any.whl (62kB)
+Collecting cycler>=0.10 (from matplotlib==2.2.3->-r requirements.txt (line 10))
+  Downloading https://files.pythonhosted.org/packages/f7/d2/e07d3ebb2bd7af696440ce7e754c59dd546ffe1bbe732c8ab68b9c834e61/cycler-0.10.0-py2.py3-none-any.whl
+Collecting werkzeug>=0.11.10 (from tensorboard<1.11.0,>=1.10.0->tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/9f/57/92a497e38161ce40606c27a86759c6b92dd34fcdb33f64171ec559257c02/Werkzeug-0.15.4-py2.py3-none-any.whl (327kB)
+Collecting markdown>=2.6.8 (from tensorboard<1.11.0,>=1.10.0->tensorflow==1.10.1->-r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/c0/4e/fd492e91abdc2d2fcb70ef453064d980688762079397f779758e055f6575/Markdown-3.1.1-py2.py3-none-any.whl (87kB)
+Building wheels for collected packages: imageio, pyyaml, absl-py, gast, termcolor
+  Running setup.py bdist_wheel for imageio: started
+  Running setup.py bdist_wheel for imageio: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/e0/43/31/605de9372ceaf657f152d3d5e82f42cf265d81db8bbe63cde1
+  Running setup.py bdist_wheel for pyyaml: started
+  Running setup.py bdist_wheel for pyyaml: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/16/27/a1/775c62ddea7bfa62324fd1f65847ed31c55dadb6051481ba3f
+  Running setup.py bdist_wheel for absl-py: started
+  Running setup.py bdist_wheel for absl-py: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/ee/98/38/46cbcc5a93cfea5492d19c38562691ddb23b940176c14f7b48
+  Running setup.py bdist_wheel for gast: started
+  Running setup.py bdist_wheel for gast: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/5c/2e/7e/a1d4d4fcebe6c381f378ce7743a3ced3699feb89bcfbdadadd
+  Running setup.py bdist_wheel for termcolor: started
+  Running setup.py bdist_wheel for termcolor: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/7c/06/54/bc84598ba1daf8f970247f550b175aaaee85f68b4b0c5ab2c6
+Successfully built imageio pyyaml absl-py gast termcolor
+Installing collected packages: numpy, pytz, six, python-dateutil, pandas, scipy, h5py, keras-applications, keras-preprocessing, pyyaml, keras, scikit-learn, setuptools, protobuf, werkzeug, markdown, tensorboard, absl-py, gast, grpcio, astor, termcolor, tensorflow, Pillow, imageio, certifi, urllib3, idna, chardet, requests, kiwisolver, pyparsing, cycler, matplotlib
+  Found existing installation: setuptools 40.6.2
+    Uninstalling setuptools-40.6.2:
+      Successfully uninstalled setuptools-40.6.2
+Successfully installed Pillow-5.3.0 absl-py-0.7.1 astor-0.8.0 certifi-2019.6.16 chardet-3.0.4 cycler-0.10.0 gast-0.2.2 grpcio-1.22.0 h5py-2.9.0 idna-2.7 imageio-2.4.1 keras-2.2.4 keras-applications-1.0.8 keras-preprocessing-1.1.0 kiwisolver-1.1.0 markdown-3.1.1 matplotlib-2.2.3 numpy-1.14.5 pandas-0.23.4 protobuf-3.9.0 pyparsing-2.4.0 python-dateutil-2.8.0 pytz-2019.1 pyyaml-5.1.1 requests-2.20.0 scikit-learn-0.20.0 scipy-1.1.0 setuptools-39.1.0 six-1.12.0 tensorboard-1.10.0 tensorflow-1.10.1 termcolor-1.1.0 urllib3-1.24.3 werkzeug-0.15.4
+You are using pip version 18.1, however version 19.1.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Removing intermediate container 03f619ce070a
+ ---> 289314297506
+Step 5/5 : CMD ["python", "-u", "train.py"]
+ ---> Running in 89de4a8f49a3
+Removing intermediate container 89de4a8f49a3
+ ---> 1115e3479c87
+
+Successfully built 1115e3479c87
+Successfully tagged kurkkumopo_training:latest
+Building backend
+Step 1/5 : FROM python:3.6.7-slim
+ ---> ea57895cf3f9
+Step 2/5 : WORKDIR /src
+ ---> Using cache
+ ---> 198fcddcff55
+Step 3/5 : COPY . /src
+ ---> 7b00bf6f0a70
+Step 4/5 : RUN pip install --trusted-host pypi.python.org -r requirements.txt
+ ---> Running in 0c2a8fb333df
+Collecting numpy==1.15.2 (from -r requirements.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/22/02/bae88c4aaea4256d890adbf3f7cf33e59a443f9985cf91cd08a35656676a/numpy-1.15.2-cp36-cp36m-manylinux1_x86_64.whl (13.9MB)
+Collecting flask==1.0.2 (from -r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/7f/e7/08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b/Flask-1.0.2-py2.py3-none-any.whl (91kB)
+Collecting python-dotenv==0.9.1 (from -r requirements.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/24/3d/977140bd94bfb160f98a5c02fdfbb72325130f12a325cf993182956e9d0e/python_dotenv-0.9.1-py2.py3-none-any.whl
+Collecting keras==2.2.4 (from -r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/5e/10/aa32dad071ce52b5502266b5c659451cfd6ffcbf14e6c8c4f16c0ff5aaab/Keras-2.2.4-py2.py3-none-any.whl (312kB)
+Collecting tensorflow (from -r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/de/f0/96fb2e0412ae9692dbf400e5b04432885f677ad6241c088ccc5fe7724d69/tensorflow-1.14.0-cp36-cp36m-manylinux1_x86_64.whl (109.2MB)
+Collecting flask-cors==3.0.6 (from -r requirements.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/d1/db/f3495569d5c3e2bdb9fb8a66c54503364abb6f35a9da2227cf5c9c50dc42/Flask_Cors-3.0.6-py2.py3-none-any.whl
+Collecting Pillow==5.3.0 (from -r requirements.txt (line 7))
+  Downloading https://files.pythonhosted.org/packages/62/94/5430ebaa83f91cc7a9f687ff5238e26164a779cca2ef9903232268b0a318/Pillow-5.3.0-cp36-cp36m-manylinux1_x86_64.whl (2.0MB)
+Collecting imageio==2.4.1 (from -r requirements.txt (line 8))
+  Downloading https://files.pythonhosted.org/packages/28/b4/cbb592964dfd71a9de6a5b08f882fd334fb99ae09ddc82081dbb2f718c81/imageio-2.4.1.tar.gz (3.3MB)
+Collecting scipy==0.19.1 (from -r requirements.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/0e/46/da8d7166102d29695330f7c0b912955498542988542c0d2ae3ea0389c68d/scipy-0.19.1-cp36-cp36m-manylinux1_x86_64.whl (48.2MB)
+Collecting Werkzeug>=0.14 (from flask==1.0.2->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/9f/57/92a497e38161ce40606c27a86759c6b92dd34fcdb33f64171ec559257c02/Werkzeug-0.15.4-py2.py3-none-any.whl (327kB)
+Collecting Jinja2>=2.10 (from flask==1.0.2->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/1d/e7/fd8b501e7a6dfe492a433deb7b9d833d39ca74916fa8bc63dd1a4947a671/Jinja2-2.10.1-py2.py3-none-any.whl (124kB)
+Collecting itsdangerous>=0.24 (from flask==1.0.2->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting click>=5.1 (from flask==1.0.2->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl (81kB)
+Collecting keras-preprocessing>=1.0.5 (from keras==2.2.4->-r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/28/6a/8c1f62c37212d9fc441a7e26736df51ce6f0e38455816445471f10da4f0a/Keras_Preprocessing-1.1.0-py2.py3-none-any.whl (41kB)
+Collecting keras-applications>=1.0.6 (from keras==2.2.4->-r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/71/e3/19762fdfc62877ae9102edf6342d71b28fbfd9dea3d2f96a882ce099b03f/Keras_Applications-1.0.8-py3-none-any.whl (50kB)
+Collecting pyyaml (from keras==2.2.4->-r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/a3/65/837fefac7475963d1eccf4aa684c23b95aa6c1d033a2c5965ccb11e22623/PyYAML-5.1.1.tar.gz (274kB)
+Collecting six>=1.9.0 (from keras==2.2.4->-r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/73/fb/00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9/six-1.12.0-py2.py3-none-any.whl
+Collecting h5py (from keras==2.2.4->-r requirements.txt (line 4))
+  Downloading https://files.pythonhosted.org/packages/30/99/d7d4fbf2d02bb30fb76179911a250074b55b852d34e98dd452a9f394ac06/h5py-2.9.0-cp36-cp36m-manylinux1_x86_64.whl (2.8MB)
+Collecting astor>=0.6.0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/d1/4f/950dfae467b384fc96bc6469de25d832534f6b4441033c39f914efd13418/astor-0.8.0-py2.py3-none-any.whl
+Collecting gast>=0.2.0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/4e/35/11749bf99b2d4e3cceb4d55ca22590b0d7c2c62b9de38ac4a4a7f4687421/gast-0.2.2.tar.gz
+Collecting grpcio>=1.8.6 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/f2/5d/b434403adb2db8853a97828d3d19f2032e79d630e0d11a8e95d243103a11/grpcio-1.22.0-cp36-cp36m-manylinux1_x86_64.whl (2.2MB)
+Requirement already satisfied: wheel>=0.26 in /usr/local/lib/python3.6/site-packages (from tensorflow->-r requirements.txt (line 5)) (0.32.2)
+Collecting google-pasta>=0.1.6 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/d0/33/376510eb8d6246f3c30545f416b2263eee461e40940c2a4413c711bdf62d/google_pasta-0.1.7-py3-none-any.whl (52kB)
+Collecting tensorboard<1.15.0,>=1.14.0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/91/2d/2ed263449a078cd9c8a9ba50ebd50123adf1f8cfbea1492f9084169b89d9/tensorboard-1.14.0-py3-none-any.whl (3.1MB)
+Collecting protobuf>=3.6.1 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/dc/0e/e7cdff89745986c984ba58e6ff6541bc5c388dd9ab9d7d312b3b1532584a/protobuf-3.9.0-cp36-cp36m-manylinux1_x86_64.whl (1.2MB)
+Collecting absl-py>=0.7.0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/da/3f/9b0355080b81b15ba6a9ffcf1f5ea39e307a2778b2f2dc8694724e8abd5b/absl-py-0.7.1.tar.gz (99kB)
+Collecting tensorflow-estimator<1.15.0rc0,>=1.14.0rc0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/3c/d5/21860a5b11caf0678fbc8319341b0ae21a07156911132e0e71bffed0510d/tensorflow_estimator-1.14.0-py2.py3-none-any.whl (488kB)
+Collecting wrapt>=1.11.1 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/23/84/323c2415280bc4fc880ac5050dddfb3c8062c2552b34c2e512eb4aa68f79/wrapt-1.11.2.tar.gz
+Collecting termcolor>=1.1.0 (from tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/8a/48/a76be51647d0eb9f10e2a4511bf3ffb8cc1e6b14e9e4fab46173aa79f981/termcolor-1.1.0.tar.gz
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.10->flask==1.0.2->-r requirements.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/b2/5f/23e0023be6bb885d00ffbefad2942bc51a620328ee910f64abe5a8d18dd1/MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl
+Collecting setuptools>=41.0.0 (from tensorboard<1.15.0,>=1.14.0->tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/ec/51/f45cea425fd5cb0b0380f5b0f048ebc1da5b417e48d304838c02d6288a1e/setuptools-41.0.1-py2.py3-none-any.whl (575kB)
+Collecting markdown>=2.6.8 (from tensorboard<1.15.0,>=1.14.0->tensorflow->-r requirements.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/c0/4e/fd492e91abdc2d2fcb70ef453064d980688762079397f779758e055f6575/Markdown-3.1.1-py2.py3-none-any.whl (87kB)
+Building wheels for collected packages: imageio, pyyaml, gast, absl-py, wrapt, termcolor
+  Running setup.py bdist_wheel for imageio: started
+  Running setup.py bdist_wheel for imageio: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/e0/43/31/605de9372ceaf657f152d3d5e82f42cf265d81db8bbe63cde1
+  Running setup.py bdist_wheel for pyyaml: started
+  Running setup.py bdist_wheel for pyyaml: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/16/27/a1/775c62ddea7bfa62324fd1f65847ed31c55dadb6051481ba3f
+  Running setup.py bdist_wheel for gast: started
+  Running setup.py bdist_wheel for gast: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/5c/2e/7e/a1d4d4fcebe6c381f378ce7743a3ced3699feb89bcfbdadadd
+  Running setup.py bdist_wheel for absl-py: started
+  Running setup.py bdist_wheel for absl-py: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/ee/98/38/46cbcc5a93cfea5492d19c38562691ddb23b940176c14f7b48
+  Running setup.py bdist_wheel for wrapt: started
+  Running setup.py bdist_wheel for wrapt: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/d7/de/2e/efa132238792efb6459a96e85916ef8597fcb3d2ae51590dfd
+  Running setup.py bdist_wheel for termcolor: started
+  Running setup.py bdist_wheel for termcolor: finished with status 'done'
+  Stored in directory: /root/.cache/pip/wheels/7c/06/54/bc84598ba1daf8f970247f550b175aaaee85f68b4b0c5ab2c6
+Successfully built imageio pyyaml gast absl-py wrapt termcolor
+Installing collected packages: numpy, Werkzeug, MarkupSafe, Jinja2, itsdangerous, click, flask, python-dotenv, six, keras-preprocessing, h5py, keras-applications, pyyaml, scipy, keras, astor, gast, grpcio, google-pasta, setuptools, protobuf, markdown, absl-py, tensorboard, tensorflow-estimator, wrapt, termcolor, tensorflow, flask-cors, Pillow, imageio
+  Found existing installation: setuptools 40.6.2
+    Uninstalling setuptools-40.6.2:
+      Successfully uninstalled setuptools-40.6.2
+Successfully installed Jinja2-2.10.1 MarkupSafe-1.1.1 Pillow-5.3.0 Werkzeug-0.15.4 absl-py-0.7.1 astor-0.8.0 click-7.0 flask-1.0.2 flask-cors-3.0.6 gast-0.2.2 google-pasta-0.1.7 grpcio-1.22.0 h5py-2.9.0 imageio-2.4.1 itsdangerous-1.1.0 keras-2.2.4 keras-applications-1.0.8 keras-preprocessing-1.1.0 markdown-3.1.1 numpy-1.15.2 protobuf-3.9.0 python-dotenv-0.9.1 pyyaml-5.1.1 scipy-0.19.1 setuptools-41.0.1 six-1.12.0 tensorboard-1.14.0 tensorflow-1.14.0 tensorflow-estimator-1.14.0 termcolor-1.1.0 wrapt-1.11.2
+You are using pip version 18.1, however version 19.1.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+Removing intermediate container 0c2a8fb333df
+ ---> bdfeb2798822
+Step 5/5 : CMD ["python", "-u", "app.py"]
+ ---> Running in fbc32aeeb746
+Removing intermediate container fbc32aeeb746
+ ---> 45dd06332802
+
+Successfully built 45dd06332802
+Successfully tagged kurkkumopo_backend:latest
+Building frontend
+Step 1/9 : FROM node:8.9.4
+8.9.4: Pulling from library/node
+4176fe04cefe: Pull complete
+851356ecf618: Pull complete
+6115379c7b49: Pull complete
+aaf7d781d601: Pull complete
+936f8420f2e4: Pull complete
+eab82fe5fcf4: Pull complete
+ba2f0c7b6af8: Pull complete
+70f351c27b65: Pull complete
+Digest: sha256:5afc7736a71bcf24281d9dbff878c771106e0791d56949b1a4e8d27c50424283
+Status: Downloaded newer image for node:8.9.4
+ ---> 672002a50a0b
+Step 2/9 : RUN mkdir -p /usr/src/app
+ ---> Running in 190db521a210
+Removing intermediate container 190db521a210
+ ---> 2f8b9e324bf3
+Step 3/9 : COPY . /usr/src/app
+ ---> a6cc17120aa3
+Step 4/9 : WORKDIR /usr/src/app
+ ---> Running in 40e0cdf73ddc
+Removing intermediate container 40e0cdf73ddc
+ ---> a8aa905b732b
+Step 5/9 : RUN npm i
+ ---> Running in ff7647fce931
+npm WARN deprecated fsevents@1.2.4: Way too old
+npm WARN deprecated core-js@2.5.7: core-js@<2.6.8 is no longer maintained. Please, upgrade to core-js@3 or at least to actual version of core-js@2.
+npm WARN deprecated joi@11.4.0: This version has been deprecated in accordance with the hapi support policy (hapi.im/support). Please upgrade to the latest version to get the best features, bug fixes, and security patches. If you are unable to upgrade at this time, paid support is available for older versions (hapi.im/commercial).
+npm WARN deprecated circular-json@0.3.3: CircularJSON is in maintenance only, flatted is its successor.
+npm WARN deprecated kleur@2.0.2: Please upgrade to kleur@3 or migrate to 'ansi-colors' if you prefer the old syntax. Visit <https://github.com/lukeed/kleur/releases/tag/v3.0.0\> for migration path(s).
+npm WARN deprecated flatten@1.0.2: I wrote this module a very long time ago; you should use something else.
+npm WARN deprecated hoek@4.2.1: This version has been deprecated in accordance with the hapi support policy (hapi.im/support). Please upgrade to the latest version to get the best features, bug fixes, and security patches. If you are unable to upgrade at this time, paid support is available for older versions (hapi.im/commercial).
+npm WARN deprecated topo@2.0.2: This version has been deprecated in accordance with the hapi support policy (hapi.im/support). Please upgrade to the latest version to get the best features, bug fixes, and security patches. If you are unable to upgrade at this time, paid support is available for older versions (hapi.im/commercial).
+npm WARN deprecated left-pad@1.3.0: use String.prototype.padStart()
+npm WARN notice [SECURITY] webpack-dev-server has the following vulnerability: 1 high. Go here for more details: https://www.npmjs.com/advisories?search=webpack-dev-server&version=3.1.9 - Run `npm i npm@latest -g` to upgrade your npm version, and then `npm audit` to get more info.
+
+> core-js@2.6.9 postinstall /usr/src/app/node_modules/core-js
+> node scripts/postinstall || echo "ignore"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+> https://opencollective.com/core-js 
+> https://www.patreon.com/zloirock 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+
+> core-js-pure@3.1.4 postinstall /usr/src/app/node_modules/core-js-pure
+> node scripts/postinstall || echo "ignore"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+> https://opencollective.com/core-js 
+> https://www.patreon.com/zloirock 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.4 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1908 packages in 59.631s
+Removing intermediate container ff7647fce931
+ ---> 36ec1a18dca9
+Step 6/9 : RUN npm run build
+ ---> Running in d5acfcb9fbf3
+
+> client@0.1.0 build /usr/src/app
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  63.17 KB  build/static/js/1.18e98c5e.chunk.js
+  1007 B    build/static/js/main.b8fa3d3d.chunk.js
+  763 B     build/static/js/runtime~main.229c360f.js
+  327 B     build/static/css/main.2c3e868e.chunk.css
+
+The project was built assuming it is hosted at the server root.
+You can control this with the homepage field in your package.json.
+For example, add this to build it for GitHub Pages:
+
+  "homepage" : "http://myname.github.io/myapp",
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  yarn global add serve
+  serve -s build
+
+Find out more about deployment here:
+
+  http://bit.ly/CRA-deploy
+
+Removing intermediate container d5acfcb9fbf3
+ ---> d134031e4954
+Step 7/9 : RUN npm install -g serve
+ ---> Running in 5f3125642f1a
+/usr/local/bin/serve -> /usr/local/lib/node_modules/serve/bin/serve.js
++ serve@11.1.0
+added 78 packages in 5.306s
+Removing intermediate container 5f3125642f1a
+ ---> d7e369f998d8
+Step 8/9 : EXPOSE 3000
+ ---> Running in b0738d0af8c3
+Removing intermediate container b0738d0af8c3
+ ---> e32dc4db311c
+Step 9/9 : CMD ["serve", "-s", "-l", "3000", "build"]
+ ---> Running in e8fc6aa660cc
+Removing intermediate container e8fc6aa660cc
+ ---> f4a2d919598f
+
+Successfully built f4a2d919598f
+Successfully tagged kurkkumopo_frontend:latest
+Creating 27_training_1 ... done
+Creating 27_backend_1  ... done
+Creating 27_frontend_1 ... done
+Attaching to 27_training_1, 27_backend_1, 27_frontend_1
+frontend_1  | INFO: Accepting connections at http://localhost:3000
+training_1  | Using TensorFlow backend.
+backend_1   | Using TensorFlow backend.
+backend_1   | Backend starting
+backend_1   | No 'kurkkumopotin.sav' model in the model volume. Waiting for training service to provide one.
+training_1  | gathering cucumbers...
+training_1  | gathering mopeds...
+training_1  | Epoch 1/5
+training_1  | 2019-07-16 19:47:59.618845: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+training_1  | 2019-07-16 19:48:00.495594: W tensorflow/core/framework/allocator.cc:108] Allocation of 512000000 exceeds 10% of system memory.
+training_1  | 
+training_1  | 128/244 [==============>...............] - ETA: 3s - loss: 0.7426 - acc: 0.53912019-07-16 19:48:03.669394: W tensorflow/core/framework/allocator.cc:108] Allocation of 464000000 exceeds 10% of system memory.
+training_1  | 
+training_1  | 244/244 [==============================] - 7s 28ms/step - loss: 0.6688 - acc: 0.6025
+training_1  | Epoch 2/5
+training_1  | 2019-07-16 19:48:06.433958: W tensorflow/core/framework/allocator.cc:108] Allocation of 512000000 exceeds 10% of system memory.
+training_1  | 
+training_1  | 128/244 [==============>...............] - ETA: 2s - loss: 0.5755 - acc: 0.77342019-07-16 19:48:09.335422: W tensorflow/core/framework/allocator.cc:108] Allocation of 464000000 exceeds 10% of system memory.
+training_1  | 
+training_1  | 244/244 [==============================] - 6s 23ms/step - loss: 0.7531 - acc: 0.7336
+training_1  | Epoch 3/5
+training_1  | 2019-07-16 19:48:12.066369: W tensorflow/core/framework/allocator.cc:108] Allocation of 512000000 exceeds 10% of system memory.
+training_1  | 
+training_1  | 128/244 [==============>...............] - ETA: 2s - loss: 0.5037 - acc: 0.7891
+training_1  | 244/244 [==============================] - 6s 23ms/step - loss: 0.5322 - acc: 0.7869
+training_1  | Epoch 4/5
+training_1  | 
+training_1  | 128/244 [==============>...............] - ETA: 2s - loss: 0.5563 - acc: 0.8047
+training_1  | 244/244 [==============================] - 6s 24ms/step - loss: 0.4605 - acc: 0.8443
+training_1  | Epoch 5/5
+training_1  | 
+training_1  | 128/244 [==============>...............] - ETA: 2s - loss: 0.1928 - acc: 0.9297
+training_1  | 244/244 [==============================] - 6s 25ms/step - loss: 0.2378 - acc: 0.9303
+training_1  | 
+training_1  |  32/121 [======>.......................] - ETA: 0s
+training_1  |  64/121 [==============>...............] - ETA: 0s
+training_1  |  96/121 [======================>.......] - ETA: 0s
+training_1  | 121/121 [==============================] - 1s 8ms/step
+27_training_1 exited with code 0
+backend_1   | WARNING: Logging before flag parsing goes to stderr.
+backend_1   | W0716 19:48:32.172719 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+backend_1   | 
+backend_1   | W0716 19:48:32.322319 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+backend_1   | 
+backend_1   | W0716 19:48:32.387754 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:3976: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+backend_1   | 
+backend_1   | W0716 19:48:32.640663 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:131: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+backend_1   | 
+backend_1   | W0716 19:48:32.640995 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+backend_1   | 
+backend_1   | W0716 19:48:32.759932 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:174: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+backend_1   | 
+backend_1   | 2019-07-16 19:48:32.760459: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+backend_1   | 2019-07-16 19:48:32.861090: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 1800000000 Hz
+backend_1   | 2019-07-16 19:48:32.861599: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5597ab6a9560 executing computations on platform Host. Devices:
+backend_1   | 2019-07-16 19:48:32.861652: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+backend_1   | 2019-07-16 19:48:33.027461: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+backend_1   | W0716 19:48:33.113350 140161931339520 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+backend_1   | 
+backend_1   | W0716 19:48:33.127455 140161931339520 deprecation.py:323] From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+backend_1   | Instructions for updating:
+backend_1   | Use tf.where in 2.0, which has the same broadcast rule as np.where
+backend_1   |  * Serving Flask app "app" (lazy loading)
+backend_1   |  * Environment: production
+backend_1   |    WARNING: Do not use the development server in a production environment.
+backend_1   |    Use a production WSGI server instead.
+backend_1   |  * Debug mode: on
+backend_1   | I0716 19:48:34.366329 140161931339520 _internal.py:122]  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+backend_1   | I0716 19:48:34.368440 140161931339520 _internal.py:122]  * Restarting with stat
+backend_1   | Using TensorFlow backend.
+backend_1   | WARNING: Logging before flag parsing goes to stderr.
+backend_1   | W0716 19:48:41.432594 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+backend_1   | 
+backend_1   | W0716 19:48:41.458414 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+backend_1   | 
+backend_1   | W0716 19:48:41.484693 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:3976: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+backend_1   | 
+backend_1   | W0716 19:48:41.730082 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:131: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+backend_1   | 
+backend_1   | W0716 19:48:41.730438 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+backend_1   | 
+backend_1   | W0716 19:48:41.887801 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:174: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+backend_1   | 
+backend_1   | 2019-07-16 19:48:41.888562: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+backend_1   | 2019-07-16 19:48:41.899294: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 1800000000 Hz
+backend_1   | 2019-07-16 19:48:41.899651: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55b9cf3df440 executing computations on platform Host. Devices:
+backend_1   | 2019-07-16 19:48:41.899697: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+backend_1   | 2019-07-16 19:48:42.089671: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+backend_1   | W0716 19:48:42.171095 140548710758144 deprecation_wrapper.py:119] From /usr/local/lib/python3.6/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+backend_1   | 
+backend_1   | W0716 19:48:42.195994 140548710758144 deprecation.py:323] From /usr/local/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+backend_1   | Instructions for updating:
+backend_1   | Use tf.where in 2.0, which has the same broadcast rule as np.where
+backend_1   | W0716 19:48:43.441310 140548710758144 _internal.py:122]  * Debugger is active!
+backend_1   | I0716 19:48:43.460308 140548710758144 _internal.py:122]  * Debugger PIN: 196-630-847
+##### From another console:
+$ firefox http://localhost:3000 http://localhost:5000 &
+#####
+backend_1   | I0716 19:50:39.879674 140546874001152 _internal.py:122] 172.22.0.1 - - [16/Jul/2019 19:50:39] "GET /ping HTTP/1.1" 200 -
+backend_1   | /usr/local/lib/python3.6/site-packages/scipy/misc/pilutil.py:482: FutureWarning: Conversion of the second argument of issubdtype from `int` to `np.signedinteger` is deprecated. In future, it will be treated as `np.int64 == np.dtype(int).type`.
+backend_1   |   if issubdtype(ts, int):
+backend_1   | /usr/local/lib/python3.6/site-packages/scipy/misc/pilutil.py:485: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+backend_1   |   elif issubdtype(type(size), float):
+backend_1   | I0716 19:50:57.477160 140546874001152 _internal.py:122] 172.22.0.1 - - [16/Jul/2019 19:50:57] "POST /kurkkuvaimopo HTTP/1.1" 200 -
+backend_1   | I0716 19:55:04.524359 140546874001152 _internal.py:122] 172.22.0.1 - - [16/Jul/2019 19:55:04] "POST /kurkkuvaimopo HTTP/1.1" 200 -
+backend_1   | I0716 19:55:56.161343 140546874001152 _internal.py:122] 172.22.0.1 - - [16/Jul/2019 19:55:56] "POST /kurkkuvaimopo HTTP/1.1" 200 -
+backend_1   | I0716 19:57:15.943605 140546874001152 _internal.py:122] 172.22.0.1 - - [16/Jul/2019 19:57:15] "POST /kurkkuvaimopo HTTP/1.1" 200 -
+Gracefully stopping... (press Ctrl+C again to force)
+Killing 27_frontend_1  ... done
+Killing 27_backend_1   ... done
