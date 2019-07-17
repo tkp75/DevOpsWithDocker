@@ -1,1 +1,1 @@
-nginx added into docker-compose.yml file
+nginx added into docker-compose.yml file, frontend is accessible from port 80
