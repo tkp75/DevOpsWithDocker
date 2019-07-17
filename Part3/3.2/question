@@ -1,0 +1,7 @@
+We’ve used the youtube-dl a lot in the material but I believe that we should expand our horizons.
+
+Create a new Dockerfile for yle-dl (https://aajanki.github.io/yle-dl/) and optimize it.
+
+Use your application to download something to a volume without breaking the YLE Terms of Service (https://ohjeet.areena.yle.fi/hc/fi/articles/115002969969-Yle-Areenan-k%C3%A4ytt%C3%B6ehdot)
+
+This exercise was created by Terho Uotila
