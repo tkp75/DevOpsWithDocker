@@ -1,6 +1,6 @@
 FROM node
 EXPOSE 8000
-ENV FRONT_URL=http://localhost:5000
+ENV FRONT_URL=http://nginx:80
 WORKDIR /home/node/
 RUN wget https://github.com/docker-hy/backend-example-docker/archive/master.zip && \
     unzip master.zip && \
