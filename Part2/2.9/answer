@@ -1,1 +1,1 @@
-docker-compose.yml edited to contain volumes for postgres and redis
+docker-compose.yml edited to contain volumes for PostgreSQL DB (./db) and redis (./redis)
