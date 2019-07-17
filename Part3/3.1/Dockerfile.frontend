@@ -5,10 +5,11 @@ WORKDIR /home/node/
 RUN wget https://github.com/docker-hy/frontend-example-docker/archive/master.zip && \
     unzip master.zip && \
     mv -f frontend-example-docker-master/* . && \
-    rm -fr master.zip frontend-example-docker-master && \
-    mkdir logs && \
+    rm -f -r master.zip frontend-example-docker-master && \
+    mkdir /home/node/logs && \
     touch /home/node/logs/logs.txt && \
     ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    npm install --production && \
+    rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
     chown -R node:node .
-RUN npm install
 CMD npm start

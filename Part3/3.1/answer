@@ -1,8 +1,1 @@
 Starting point taken from exercise 2.10, having node:latest as base image
-$ docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-<none>              <none>              154decb9f3ca        4 minutes ago       1.06GB
-<none>              <none>              55b643b9eae6        6 minutes ago       966MB
-node                latest              7c412a558705        5 days ago          907MB
-
-Sizes after tuning
