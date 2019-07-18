@@ -12,7 +12,7 @@ EXPOSE 5000
 ENV API_URL=http://localhost:80/api
 ENV NODE_ENV=production
 WORKDIR /home/node/
-COPY --from=build-frontend /home/node/dist .
+COPY --from=build-frontend /home/node/dist/ dist/
 RUN npm install -g serve && \
     mkdir /home/node/logs && \
     touch /home/node/logs/logs.txt && \

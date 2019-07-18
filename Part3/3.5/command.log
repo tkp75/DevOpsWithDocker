@@ -1,25 +1,25 @@
 $ docker build -t frontend:3.5 -f Dockerfile.frontend .
-Sending build context to Docker daemon  4.096kB
+Sending build context to Docker daemon  37.38kB
 Step 1/13 : FROM node:alpine as build-frontend
  ---> a9a8b83644f7
 Step 2/13 : ENV NODE_ENV=production
- ---> Running in d45f80c5b82b
-Removing intermediate container d45f80c5b82b
- ---> 97dc99cca29c
+ ---> Running in 3316f4bd7b59
+Removing intermediate container 3316f4bd7b59
+ ---> 62dcda576af1
 Step 3/13 : WORKDIR /home/node/
- ---> Running in 252eb7f12ffd
-Removing intermediate container 252eb7f12ffd
- ---> 3753fb73d1c8
+ ---> Running in bae72958a782
+Removing intermediate container bae72958a782
+ ---> b8d89a3ad88c
 Step 4/13 : RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz &&     mv -f docker-hy-frontend-example-docker-*/* . &&     rm -f -r docker-hy-frontend-example-docker-* &&     npm install &&     npm run-script build
- ---> Running in b54b6fd8ac91
+ ---> Running in 80266bf49d48
 Connecting to github.com (140.82.118.4:443)
-Connecting to codeload.github.com (140.82.114.9:443)
+Connecting to codeload.github.com (192.30.253.120:443)
 -                    100% |********************************| 91524  0:00:00 ETA
 
 npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
 npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
 
-added 1029 packages from 415 contributors and audited 11636 packages in 26.405s
+added 1029 packages from 415 contributors and audited 11636 packages in 22.131s
 found 311 vulnerabilities (4 moderate, 307 high)
   run `npm audit fix` to fix them, or `npm audit` for details
 
@@ -29,8 +29,8 @@ found 311 vulnerabilities (4 moderate, 307 high)
 Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
 Hash: 1bcb2b1097ed8320432f
 Version: webpack 4.29.6
-Time: 26222ms
-Built at: 07/18/2019 8:03:56 PM
+Time: 25812ms
+Built at: 07/18/2019 8:26:57 PM
                                  Asset       Size  Chunks                    Chunk Names
 0ab54153eeeca0ce03978cc463b257f7.woff2   39.2 KiB          [emitted]         
   13db00b7a34fee4d819ab7f9838cc428.eot   96.3 KiB          [emitted]         
@@ -93,8 +93,8 @@ Entrypoint main [big] = vendors~main-1.css vendors~main.js main.css main.js
 WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
 This can impact web performance.
 Assets: 
-  962a1bf31c081691065fe333d9fa8105.svg (382 KiB)
   a1a749e89f578a49306ec2b055c073da.svg (496 KiB)
+  962a1bf31c081691065fe333d9fa8105.svg (382 KiB)
   vendors~main-1.css (602 KiB)
   vendors~main.js (328 KiB)
 
@@ -123,8 +123,8 @@ Child mini-css-extract-plugin node_modules/css-loader/index.js!src/assets/custom
     Entrypoint mini-css-extract-plugin = *
     [0] ./node_modules/css-loader!./src/assets/custom.css 340 bytes {0} [built]
         + 1 hidden module
-Removing intermediate container b54b6fd8ac91
- ---> 30c5e1766462
+Removing intermediate container 80266bf49d48
+ ---> 32e96301af50
 Step 5/13 : FROM node:alpine
  ---> a9a8b83644f7
 Step 6/13 : EXPOSE 5000
@@ -139,38 +139,40 @@ Step 8/13 : ENV NODE_ENV=production
 Step 9/13 : WORKDIR /home/node/
  ---> Using cache
  ---> 86ee56082e0f
-Step 10/13 : COPY --from=build-frontend /home/node/dist .
- ---> ec2f2860b4ea
+Step 10/13 : COPY --from=build-frontend /home/node/dist/ dist/
+ ---> 1254e38de345
 Step 11/13 : RUN npm install -g serve &&     mkdir /home/node/logs &&     touch /home/node/logs/logs.txt &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/* &&     chown -R node:node .
- ---> Running in 33b9d1e5d389
+ ---> Running in fad01f8bac8a
 /usr/local/bin/serve -> /usr/local/lib/node_modules/serve/bin/serve.js
 + serve@11.1.0
-added 78 packages from 39 contributors in 4.557s
-Removing intermediate container 33b9d1e5d389
- ---> 51e959801ffd
+added 78 packages from 39 contributors in 5.237s
+Removing intermediate container fad01f8bac8a
+ ---> 14e9ec3a49b3
 Step 12/13 : USER node
- ---> Running in 4d84e417b785
-Removing intermediate container 4d84e417b785
- ---> c175f9074e50
+ ---> Running in 230b97c32315
+Removing intermediate container 230b97c32315
+ ---> 4e88b33c4a0b
 Step 13/13 : CMD serve -s -l 5000 dist
- ---> Running in 6eaf0465779a
-Removing intermediate container 6eaf0465779a
- ---> 3d3df923425c
-Successfully built 3d3df923425c
+ ---> Running in 1c7ef9f76340
+Removing intermediate container 1c7ef9f76340
+ ---> ed7ccb33a76a
+Successfully built ed7ccb33a76a
 Successfully tagged frontend:3.5
 $ docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-frontend            3.5                 3d3df923425c        54 seconds ago       90.7MB
-<none>              <none>              30c5e1766462        About a minute ago   258MB
-frontend            3.4                 bee9682c31c1        About an hour ago    233MB
-backend             3.4                 89c47c120de2        About an hour ago    131MB
-frontend            3.3                 643250857328        3 hours ago          306MB
-backend             3.3                 e6f4e1a5a667        3 hours ago          204MB
-yle-dl              latest              d6cfcab31922        7 hours ago          516MB
-postgres            latest              53912975086f        20 hours ago         312MB
-nginx               latest              98ebf73aba75        21 hours ago         109MB
-node                slim                2523ec7bd8fd        22 hours ago         151MB
-python              slim                63491ee411bb        5 days ago           179MB
-redis               latest              598a6f110d01        6 days ago           118MB
-node                alpine              a9a8b83644f7        2 weeks ago          78.8MB
-$
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+frontend            3.5                 ed7ccb33a76a        3 seconds ago       90.7MB
+<none>              <none>              32e96301af50        13 seconds ago      258MB
+frontend            3.4                 bee9682c31c1        2 hours ago         233MB
+backend             3.4                 89c47c120de2        2 hours ago         131MB
+backend             3.5                 89c47c120de2        2 hours ago         131MB
+frontend            3.3                 643250857328        3 hours ago         306MB
+backend             3.3                 e6f4e1a5a667        3 hours ago         204MB
+yle-dl              latest              d6cfcab31922        7 hours ago         516MB
+postgres            latest              53912975086f        21 hours ago        312MB
+nginx               latest              98ebf73aba75        21 hours ago        109MB
+node                slim                2523ec7bd8fd        23 hours ago        151MB
+python              slim                63491ee411bb        5 days ago          179MB
+redis               latest              598a6f110d01        6 days ago          118MB
+node                alpine              a9a8b83644f7        2 weeks ago         78.8MB
+$ 
+
