@@ -1,6 +1,5 @@
-
+Frontend docker file was splitted into two parts. Image size was reduced radically.
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 frontend            3.5                 ed7ccb33a76a        3 seconds ago       90.7MB
 <none>              <none>              32e96301af50        13 seconds ago      258MB
 frontend            3.4                 bee9682c31c1        2 hours ago         233MB
-
