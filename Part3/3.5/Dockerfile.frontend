@@ -1,0 +1,16 @@
+FROM node:alpine
+EXPOSE 5000
+ENV API_URL=http://localhost:80/api
+ENV NODE_ENV=production
+WORKDIR /home/node/
+RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz && \
+    mv -f docker-hy-frontend-example-docker-*/* . && \
+    rm -f -r docker-hy-frontend-example-docker-* && \
+    mkdir /home/node/logs && \
+    touch /home/node/logs/logs.txt && \
+    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    npm install --production && \
+    rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
+    chown -R node:node .
+USER node
+CMD npm start
