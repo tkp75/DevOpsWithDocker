@@ -1,6 +1,7 @@
-FROM node:slim
+FROM node:alpine
 EXPOSE 5000
 ENV API_URL=http://localhost:80/api
+ENV NODE_ENV=production
 WORKDIR /home/node/
 RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz && \
     mv -f docker-hy-frontend-example-docker-*/* . && \

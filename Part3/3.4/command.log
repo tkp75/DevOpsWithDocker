@@ -1,0 +1,103 @@
+$ docker build -t backend:3.4 -f Dockerfile.backend .
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM node:alpine
+alpine: Pulling from library/node
+e7c96db7181b: Pull complete 
+a2b3c20ed471: Pull complete 
+240c8d07e1ef: Pull complete 
+21738480b7ba: Pull complete 
+Digest: sha256:182778091c2c27ffa76caa41e762b21a2555118bae00212c52b347bddbc058ba
+Status: Downloaded newer image for node:alpine
+ ---> a9a8b83644f7
+Step 2/8 : EXPOSE 8000
+ ---> Running in 420976da1550
+Removing intermediate container 420976da1550
+ ---> 16ba80854e6c
+Step 3/8 : ENV FRONT_URL=http://nginx:80
+ ---> Running in 4463cf98f91d
+Removing intermediate container 4463cf98f91d
+ ---> a57825f5194e
+Step 4/8 : ENV NODE_ENV=production
+ ---> Running in 0a2255ffd233
+Removing intermediate container 0a2255ffd233
+ ---> 5ecfdef69262
+Step 5/8 : WORKDIR /home/node/
+ ---> Running in 35fe90472a14
+Removing intermediate container 35fe90472a14
+ ---> de5380c4f4fa
+Step 6/8 : RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz &&     mv -f docker-hy-backend-example-docker-*/* . &&     rm -f -r docker-hy-backend-example-docker-* &&     mkdir /home/node/logs &&     mv -f logs.txt logs/ &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     npm install --production --global cross-env &&     npm install --production &&     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* &&     chown -R node:node .
+ ---> Running in bf793d5ec07c
+Connecting to github.com (140.82.118.3:443)
+Connecting to codeload.github.com (140.82.113.10:443)
+-                    100% |********************************| 51130  0:00:00 ETA
+
+/usr/local/bin/cross-env -> /usr/local/lib/node_modules/cross-env/dist/bin/cross-env.js
+/usr/local/bin/cross-env-shell -> /usr/local/lib/node_modules/cross-env/dist/bin/cross-env-shell.js
++ cross-env@5.2.0
+added 10 packages from 8 contributors in 1.171s
+added 360 packages from 378 contributors and audited 5317 packages in 13.083s
+found 272 vulnerabilities (1 moderate, 271 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container bf793d5ec07c
+ ---> 63143b1b87ee
+Step 7/8 : USER node
+ ---> Running in 5ab53d12d8ae
+Removing intermediate container 5ab53d12d8ae
+ ---> 608050d22504
+Step 8/8 : CMD npm start
+ ---> Running in 096de65a05ff
+Removing intermediate container 096de65a05ff
+ ---> 89c47c120de2
+Successfully built 89c47c120de2
+Successfully tagged backend:3.4
+$ docker build -t frontend:3.4 -f Dockerfile.frontend .
+Sending build context to Docker daemon  23.04kB
+Step 1/8 : FROM node:alpine
+ ---> a9a8b83644f7
+Step 2/8 : EXPOSE 5000
+ ---> Running in 44f547a23458
+Removing intermediate container 44f547a23458
+ ---> b42b168e21e9
+Step 3/8 : ENV API_URL=http://localhost:80/api
+ ---> Running in 5a0f1d35ab1e
+Removing intermediate container 5a0f1d35ab1e
+ ---> 835230a1ab04
+Step 4/8 : ENV NODE_ENV=production
+ ---> Running in c1f2e4fd55c3
+Removing intermediate container c1f2e4fd55c3
+ ---> 1fe641de5732
+Step 5/8 : WORKDIR /home/node/
+ ---> Running in 61d2b4dcf1a9
+Removing intermediate container 61d2b4dcf1a9
+ ---> 86ee56082e0f
+Step 6/8 : RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz &&     mv -f docker-hy-frontend-example-docker-*/* . &&     rm -f -r docker-hy-frontend-example-docker-* &&     mkdir /home/node/logs &&     touch /home/node/logs/logs.txt &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     npm install --production &&     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* &&     chown -R node:node .
+ ---> Running in 9cbec65afc35
+Connecting to github.com (140.82.118.3:443)
+Connecting to codeload.github.com (140.82.113.9:443)
+-                    100% |********************************| 91524  0:00:00 ETA
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1029 packages from 415 contributors and audited 11636 packages in 27.853s
+found 311 vulnerabilities (4 moderate, 307 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 9cbec65afc35
+ ---> c299fd27209b
+Step 7/8 : USER node
+ ---> Running in 82bc7f290e5b
+Removing intermediate container 82bc7f290e5b
+ ---> d46414f272c0
+Step 8/8 : CMD npm start
+ ---> Running in a54564f2c7e9
+Removing intermediate container a54564f2c7e9
+ ---> bee9682c31c1
+Successfully built bee9682c31c1
+Successfully tagged frontend:3.4
+$ docker images \*end 
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+frontend            3.4                 bee9682c31c1        About a minute ago   233MB
+backend             3.4                 89c47c120de2        4 minutes ago        131MB
+frontend            3.3                 643250857328        2 hours ago          306MB
+backend             3.3                 e6f4e1a5a667        2 hours ago          204MB
+$

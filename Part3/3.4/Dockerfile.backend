@@ -1,6 +1,7 @@
-FROM node:slim
+FROM node:alpine
 EXPOSE 8000
 ENV FRONT_URL=http://nginx:80
+ENV NODE_ENV=production
 WORKDIR /home/node/
 RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz && \
     mv -f docker-hy-backend-example-docker-*/* . && \
