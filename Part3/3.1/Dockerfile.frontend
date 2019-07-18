@@ -1,11 +1,10 @@
-FROM node
+FROM node:slim
 EXPOSE 5000
 ENV API_URL=http://localhost:80/api
 WORKDIR /home/node/
-RUN wget https://github.com/docker-hy/frontend-example-docker/archive/master.zip && \
-    unzip master.zip && \
-    mv -f frontend-example-docker-master/* . && \
-    rm -f -r master.zip frontend-example-docker-master && \
+RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz && \
+    mv -f docker-hy-frontend-example-docker-*/* . && \
+    rm -f -r docker-hy-frontend-example-docker-* && \
     mkdir /home/node/logs && \
     touch /home/node/logs/logs.txt && \
     ln -s /home/node/logs/logs.txt /home/node/logs.txt && \

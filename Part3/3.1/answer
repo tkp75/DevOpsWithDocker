@@ -1,1 +1,10 @@
-Starting point taken from exercise 2.10, having node:latest as base image
+Starting point taken from exercise 2.10, having node:latest as the base image.
+IMAGE		SIZE	LAYER SIZES
+node:latest	907MB
+node:slim	151MB
+backend:2.10	966MB	(0B + 58.4MB + 223kB + 0B + 0B + 0B + 907MB)
+frontend:2.10	1.06GB	(0B + 155MB  + 389kB + 0B + 0B + 0B + 907MB)
+backend:3.1	204MB	(0B + 52.5MB         + 0B + 0B + 0B + 151MB)
+frontend:3.1	306MB	(0B + 155MB          + 0B + 0B + 0B + 151MB)
+
+Choosing better base image version had great impact, but the rest had very little or no imact as docker files were quite compact already. Knowledge of nodes/npm and frontend/backend projects could help to squeeze some bytes out of them though.
