@@ -1,0 +1,7 @@
+Dockerfile created for yle-dl. A volume mounted on /yle-dl can be used to save downloads.
+Example:
+$ docker build -t yle-dl . 
+$ docker run -it -v `pwd`/dl:/yle-dl yle-dl https://areena.yle.fi/1-50211440
+$ ls -1 dl
+Yle Uutiset suora: Ylen uutisvisa: Kuka päihittää Matti Röngän? -2019-07-17T19:57.mkv
+$
