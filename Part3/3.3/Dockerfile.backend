@@ -12,4 +12,5 @@ RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master
     npm install --production && \
     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
     chown -R node:node .
+USER node
 CMD npm start

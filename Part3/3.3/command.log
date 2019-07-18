@@ -1,0 +1,384 @@
+$ docker-compose up --build
+Creating network "33_default" with the default driver
+Creating volume "33_backend_logs" with default driver
+Creating volume "33_frontend_logs" with default driver
+Pulling db (postgres:)...
+latest: Pulling from library/postgres
+0a4690c5d889: Pull complete
+723861590717: Pull complete
+db019468bdf4: Pull complete
+91cb81a60371: Pull complete
+a2a4ab07588d: Pull complete
+a7ccdc2a5f31: Pull complete
+93687df2bb93: Pull complete
+f00839cf3313: Pull complete
+883c210c14fb: Pull complete
+8a7c2d5b0cd7: Pull complete
+76024f5cefd1: Pull complete
+f34bbb0a3f3f: Pull complete
+8529e6396a61: Pull complete
+f39bb2a104c1: Pull complete
+Digest: sha256:68b49a280d2fbe9330c0031970ebb72015e1272dfa25f0ed7557514f9e5ad7b7
+Status: Downloaded newer image for postgres:latest
+Pulling redis (redis:)...
+latest: Pulling from library/redis
+f5d23c7fed46: Already exists
+a4a5c04dafc1: Pull complete
+605bafc84bc9: Pull complete
+f07a4e35cd96: Pull complete
+17944e5e3eb7: Pull complete
+6f875a8605e0: Pull complete
+Digest: sha256:8888f6cd2509062a377e903e17777b4a6d59c92769f6807f034fa345da9eebcf
+Status: Downloaded newer image for redis:latest
+Building backend
+Step 1/7 : FROM node:slim
+slim: Pulling from library/node
+0a4690c5d889: Already exists
+68e3f078a91d: Pull complete
+fa2aa7c14912: Pull complete
+4391332dbde3: Pull complete
+1f11ca327b23: Pull complete
+Digest: sha256:5357700d4106791614cecbc8426854143ca43afca7878635959e072f365eb8e8
+Status: Downloaded newer image for node:slim
+ ---> 2523ec7bd8fd
+Step 2/7 : EXPOSE 8000
+ ---> Running in c4baaba95737
+Removing intermediate container c4baaba95737
+ ---> a77f1c337608
+Step 3/7 : ENV FRONT_URL=http://nginx:80
+ ---> Running in ea5edf1d67a8
+Removing intermediate container ea5edf1d67a8
+ ---> ef3e89f8e6be
+Step 4/7 : WORKDIR /home/node/
+ ---> Running in 9e5ef35c6e81
+Removing intermediate container 9e5ef35c6e81
+ ---> 718c6631440e
+Step 5/7 : RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz &&     mv -f docker-hy-backend-example-docker-*/* . &&     rm -f -r docker-hy-backend-example-docker-* &&     mkdir /home/node/logs &&     mv -f logs.txt logs/ &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     npm install --production --global cross-env &&     npm install --production &&     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* &&     chown -R node:node .
+ ---> Running in 1213edc623ff
+--2019-07-18 17:07:29--  https://github.com/docker-hy/backend-example-docker/tarball/master
+Resolving github.com (github.com)... 140.82.118.4
+Connecting to github.com (github.com)|140.82.118.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/docker-hy/backend-example-docker/legacy.tar.gz/master [following]
+--2019-07-18 17:07:29--  https://codeload.github.com/docker-hy/backend-example-docker/legacy.tar.gz/master
+Resolving codeload.github.com (codeload.github.com)... 140.82.113.9
+Connecting to codeload.github.com (codeload.github.com)|140.82.113.9|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/x-gzip]
+Saving to: 'STDOUT'
+
+     0K .......... .......... .......... .......... .........   200K=0.3s
+
+2019-07-18 17:07:30 (200 KB/s) - written to stdout [51130]
+
+/usr/local/bin/cross-env -> /usr/local/lib/node_modules/cross-env/dist/bin/cross-env.js
+/usr/local/bin/cross-env-shell -> /usr/local/lib/node_modules/cross-env/dist/bin/cross-env-shell.js
++ cross-env@5.2.0
+added 10 packages from 8 contributors in 0.931s
+added 360 packages from 378 contributors and audited 5317 packages in 10.843s
+found 272 vulnerabilities (1 moderate, 271 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 1213edc623ff
+ ---> 7128d35899df
+Step 6/7 : USER node
+ ---> Running in 9728f53d30c7
+Removing intermediate container 9728f53d30c7
+ ---> e5e2e8ac096d
+Step 7/7 : CMD npm start
+ ---> Running in 8732b531e113
+Removing intermediate container 8732b531e113
+ ---> e6f4e1a5a667
+
+Successfully built e6f4e1a5a667
+Successfully tagged backend:3.3
+Building frontend
+Step 1/7 : FROM node:slim
+ ---> 2523ec7bd8fd
+Step 2/7 : EXPOSE 5000
+ ---> Running in d496159b850f
+Removing intermediate container d496159b850f
+ ---> 90697bbf7a44
+Step 3/7 : ENV API_URL=http://localhost:80/api
+ ---> Running in 1ccbc6daf4bf
+Removing intermediate container 1ccbc6daf4bf
+ ---> e80fb223e5f0
+Step 4/7 : WORKDIR /home/node/
+ ---> Running in 1555ba2c9563
+Removing intermediate container 1555ba2c9563
+ ---> 6c695a2a8c72
+Step 5/7 : RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz &&     mv -f docker-hy-frontend-example-docker-*/* . &&     rm -f -r docker-hy-frontend-example-docker-* &&     mkdir /home/node/logs &&     touch /home/node/logs/logs.txt &&     ln -s /home/node/logs/logs.txt /home/node/logs.txt &&     npm install --production &&     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* &&     chown -R node:node .
+ ---> Running in 52fbd8c9873f
+--2019-07-18 17:07:52--  https://github.com/docker-hy/frontend-example-docker/tarball/master
+Resolving github.com (github.com)... 140.82.118.4
+Connecting to github.com (github.com)|140.82.118.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/docker-hy/frontend-example-docker/legacy.tar.gz/master [following]
+--2019-07-18 17:07:52--  https://codeload.github.com/docker-hy/frontend-example-docker/legacy.tar.gz/master
+Resolving codeload.github.com (codeload.github.com)... 140.82.113.9
+Connecting to codeload.github.com (codeload.github.com)|140.82.113.9|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/x-gzip]
+Saving to: 'STDOUT'
+
+     0K .......... .......... .......... .......... ..........  186K
+    50K .......... .......... .......... .........             5.69M=0.3s
+
+2019-07-18 17:07:53 (324 KB/s) - written to stdout [91524]
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+added 1029 packages from 415 contributors and audited 11636 packages in 25.463s
+found 311 vulnerabilities (4 moderate, 307 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 52fbd8c9873f
+ ---> 807493b182ef
+Step 6/7 : USER node
+ ---> Running in 972f06e5ea4a
+Removing intermediate container 972f06e5ea4a
+ ---> 074de81d81e8
+Step 7/7 : CMD npm start
+ ---> Running in e87f1d880429
+Removing intermediate container e87f1d880429
+ ---> 643250857328
+
+Successfully built 643250857328
+Successfully tagged frontend:3.3
+Pulling nginx (nginx:)...
+latest: Pulling from library/nginx
+0a4690c5d889: Already exists
+9719afee3eb7: Pull complete
+44446b456159: Pull complete
+Digest: sha256:b4b9b3eee194703fc2fa8afa5b7510c77ae70cfba567af1376a573a967c03dbb
+Status: Downloaded newer image for nginx:latest
+Creating 33_db_1       ... done
+Creating 33_redis_1    ... done
+Creating 33_frontend_1 ... done
+Creating 33_backend_1  ... done
+Creating 33_nginx_1    ... done
+Attaching to 33_redis_1, 33_frontend_1, 33_db_1, 33_backend_1, 33_nginx_1
+redis_1     | 1:C 18 Jul 2019 17:08:45.257 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis_1     | 1:C 18 Jul 2019 17:08:45.257 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=1, just started
+redis_1     | 1:C 18 Jul 2019 17:08:45.257 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 * Running mode=standalone, port=6379.
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 # Server initialized
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1     | 1:M 18 Jul 2019 17:08:45.259 * Ready to accept connections
+frontend_1  | 
+frontend_1  | > frontend-example-docker@1.0.0 start /home/node
+frontend_1  | > webpack --mode production && serve -s -l 5000 dist
+frontend_1  | 
+frontend_1  | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+db_1        | The files belonging to this database system will be owned by user "postgres".
+db_1        | This user must also own the server process.
+db_1        | 
+db_1        | The database cluster will be initialized with locale "en_US.utf8".
+db_1        | The default database encoding has accordingly been set to "UTF8".
+db_1        | The default text search configuration will be set to "english".
+db_1        | 
+db_1        | Data page checksums are disabled.
+db_1        | 
+db_1        | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db_1        | creating subdirectories ... ok
+db_1        | selecting default max_connections ... 100
+db_1        | selecting default shared_buffers ... 128MB
+db_1        | selecting default timezone ... Etc/UTC
+db_1        | selecting dynamic shared memory implementation ... posix
+db_1        | creating configuration files ... ok
+db_1        | running bootstrap script ... ok
+db_1        | performing post-bootstrap initialization ... ok
+db_1        | syncing data to disk ... 
+db_1        | WARNING: enabling "trust" authentication for local connections
+db_1        | You can change this by editing pg_hba.conf or using the option -A, or
+db_1        | --auth-local and --auth-host, the next time you run initdb.
+db_1        | ok
+db_1        | 
+db_1        | Success. You can now start the database server using:
+db_1        | 
+db_1        |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db_1        | 
+db_1        | waiting for server to start....2019-07-18 17:08:47.661 UTC [42] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db_1        | 2019-07-18 17:08:47.697 UTC [43] LOG:  database system was shut down at 2019-07-18 17:08:46 UTC
+db_1        | 2019-07-18 17:08:47.703 UTC [42] LOG:  database system is ready to accept connections
+db_1        |  done
+db_1        | server started
+db_1        | 
+db_1        | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+db_1        | 
+db_1        | waiting for server to shut down....2019-07-18 17:08:47.955 UTC [42] LOG:  received fast shutdown request
+db_1        | 2019-07-18 17:08:47.967 UTC [42] LOG:  aborting any active transactions
+db_1        | 2019-07-18 17:08:47.970 UTC [42] LOG:  background worker "logical replication launcher" (PID 49) exited with exit code 1
+db_1        | 2019-07-18 17:08:47.971 UTC [44] LOG:  shutting down
+db_1        | 2019-07-18 17:08:47.987 UTC [42] LOG:  database system is shut down
+db_1        |  done
+db_1        | server stopped
+db_1        | 
+db_1        | PostgreSQL init process complete; ready for start up.
+db_1        | 
+db_1        | 2019-07-18 17:08:48.081 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db_1        | 2019-07-18 17:08:48.081 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db_1        | 2019-07-18 17:08:48.094 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db_1        | 2019-07-18 17:08:48.124 UTC [51] LOG:  database system was shut down at 2019-07-18 17:08:47 UTC
+db_1        | 2019-07-18 17:08:48.137 UTC [1] LOG:  database system is ready to accept connections
+backend_1   | 
+backend_1   | > backend-example-docker@1.0.0 start /home/node
+backend_1   | > cross-env NODE_ENV=production node index.js
+backend_1   | 
+backend_1   | Browserslist: caniuse-lite is outdated. Please run next command `npm update caniuse-lite browserslist`
+backend_1   | Thu, 18 Jul 2019 17:08:48 GMT sequelize deprecated String based operators are now deprecated. Please use Symbol based operators for better security, read more at http://docs.sequelizejs.com/manual/tutorial/querying.html#operators at node_modules/sequelize/lib/sequelize.js:242:13
+backend_1   | Testing database connection
+backend_1   | Redis connection, initating..
+backend_1   | Trying to set cache
+backend_1   | Cache set successfully
+backend_1   | Started on port 8000
+backend_1   | Executing (default): SELECT 1+1 AS result
+backend_1   | Connection ok, syncing database with model.
+backend_1   | Executing (default): CREATE TABLE IF NOT EXISTS "messages" ("id"   SERIAL , "body" VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));
+backend_1   | Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'messages' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;
+backend_1   | Database connection established!
+frontend_1  | Hash: e39f652528d0aa490b95
+frontend_1  | Version: webpack 4.29.6
+frontend_1  | Time: 25461ms
+frontend_1  | Built at: 07/18/2019 5:09:13 PM
+frontend_1  |                                  Asset       Size  Chunks                    Chunk Names
+frontend_1  | 0ab54153eeeca0ce03978cc463b257f7.woff2   39.2 KiB          [emitted]         
+frontend_1  |   13db00b7a34fee4d819ab7f9838cc428.eot   96.3 KiB          [emitted]         
+frontend_1  |   701ae6abd4719e9c2ada3535a497b341.eot   30.4 KiB          [emitted]         
+frontend_1  |   82f60bd0b94a1ed68b1e6e309ce2e8c3.svg    105 KiB          [emitted]         
+frontend_1  |   8e3c7f5520f5ae906c6cf6d7f3ddcd19.eot    104 KiB          [emitted]         
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg    382 KiB          [emitted]  [big]  
+frontend_1  |   9c74e172f87984c48ddf5c8108cabe67.png   27.5 KiB          [emitted]         
+frontend_1  |  a046592bac8f2fd96e994733faf3858c.woff   62.2 KiB          [emitted]         
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg    496 KiB          [emitted]  [big]  
+frontend_1  |   a3e2211dddcba197b5bbf2aa9d5d9a9a.svg   3.19 KiB          [emitted]         
+frontend_1  |   ad97afd3337e8cda302d10ff5a4026b8.ttf   30.2 KiB          [emitted]         
+frontend_1  |   b87b9ba532ace76ae9f6edfe9f72ded2.ttf    103 KiB          [emitted]         
+frontend_1  |   bff6c47a9da5c7cfa2e8a552e2df3a78.svg    3.2 KiB          [emitted]         
+frontend_1  |   c5ebe0b32dc1b5cc449a76c4204d13bb.ttf   96.1 KiB          [emitted]         
+frontend_1  | cd6c777f1945164224dee082abaea03a.woff2     12 KiB          [emitted]         
+frontend_1  | e8c322de9658cbeb8a774b6624167c2c.woff2   53.2 KiB          [emitted]         
+frontend_1  |  ef60a4f6c25ef7f39f2d25a748dbecfe.woff   14.4 KiB          [emitted]         
+frontend_1  |  faff92145777a3cbaf8e7367b4807987.woff   49.3 KiB          [emitted]         
+frontend_1  |                             index.html  454 bytes          [emitted]         
+frontend_1  |                               main.css  127 bytes       0  [emitted]         main
+frontend_1  |                                main.js   19.2 KiB       0  [emitted]         main
+frontend_1  |                     vendors~main-1.css    602 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  |                        vendors~main.js    328 KiB       1  [emitted]  [big]  vendors~main
+frontend_1  | Entrypoint main [big] = vendors~main-1.css vendors~main.js main.css main.js
+frontend_1  |   [7] ./node_modules/semantic-ui-react/dist/es/lib/index.js + 1 modules 2.94 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [51] ./node_modules/semantic-ui-react/dist/es/elements/Icon/Icon.js + 1 modules 6.22 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |  [80] ./node_modules/react-redux/es/index.js + 19 modules 36.2 KiB {1} [built]
+frontend_1  |       |    20 modules
+frontend_1  |  [93] ./node_modules/semantic-ui-react/dist/es/elements/Label/Label.js + 2 modules 10.6 KiB {1} [built]
+frontend_1  |       |    3 modules
+frontend_1  |  [94] (webpack)/buildin/global.js 472 bytes {1} [built]
+frontend_1  | [246] ./src/assets/toscalogo_color.svg 82 bytes {0} [built]
+frontend_1  | [247] ./src/assets/toscalogo_grayscale.svg 82 bytes {0} [built]
+frontend_1  | [266] multi @babel/polyfill ./src 40 bytes {0} [built]
+frontend_1  | [446] (webpack)/buildin/harmony-module.js 573 bytes {1} [built]
+frontend_1  | [448] ./src/assets/custom.css 39 bytes {0} [built]
+frontend_1  | [585] ./src/index.js + 18 modules 37.8 KiB {0} [built]
+frontend_1  |       | ./src/index.js 569 bytes [built]
+frontend_1  |       | ./src/util/store.js 481 bytes [built]
+frontend_1  |       | ./util/common.js 117 bytes [built]
+frontend_1  |       | ./src/util/apiConnection.js 4.7 KiB [built]
+frontend_1  |       | ./src/util/redux/index.js 219 bytes [built]
+frontend_1  |       | ./src/util/redux/messageReducer.js 1.76 KiB [built]
+frontend_1  |       | ./src/util/redux/simpleReducer.js 1.47 KiB [built]
+frontend_1  |       | ./src/util/common.js 221 bytes [built]
+frontend_1  |       |     + 11 hidden modules
+frontend_1  | [586] ./node_modules/semantic-ui-react/dist/es/elements/Button/Button.js + 3 modules 17.7 KiB {1} [built]
+frontend_1  |       |    4 modules
+frontend_1  | [594] ./node_modules/react-router-dom/es/BrowserRouter.js + 12 modules 41 KiB {1} [built]
+frontend_1  |       |    13 modules
+frontend_1  | [596] ./node_modules/react-router-dom/es/Switch.js + 1 modules 3.35 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  | [597] ./node_modules/react-router-dom/es/Route.js + 1 modules 5.9 KiB {1} [built]
+frontend_1  |       |    2 modules
+frontend_1  |     + 971 hidden modules
+frontend_1  | 
+frontend_1  | WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+frontend_1  | This can impact web performance.
+frontend_1  | Assets: 
+frontend_1  |   962a1bf31c081691065fe333d9fa8105.svg (382 KiB)
+frontend_1  |   a1a749e89f578a49306ec2b055c073da.svg (496 KiB)
+frontend_1  |   vendors~main-1.css (602 KiB)
+frontend_1  |   vendors~main.js (328 KiB)
+frontend_1  | 
+frontend_1  | WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+frontend_1  | Entrypoints:
+frontend_1  |   main (949 KiB)
+frontend_1  |       vendors~main-1.css
+frontend_1  |       vendors~main.js
+frontend_1  |       main.css
+frontend_1  |       main.js
+frontend_1  | 
+frontend_1  | 
+frontend_1  | WARNING in webpack performance recommendations: 
+frontend_1  | You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+frontend_1  | For more info visit https://webpack.js.org/guides/code-splitting/
+frontend_1  | Child html-webpack-plugin for "index.html":
+frontend_1  |      1 asset
+frontend_1  |     Entrypoint undefined = index.html
+frontend_1  |     [2] (webpack)/buildin/global.js 472 bytes {0} [built]
+frontend_1  |     [3] (webpack)/buildin/module.js 497 bytes {0} [built]
+frontend_1  |         + 2 hidden modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/semantic-ui-css/semantic.min.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |        19 modules
+frontend_1  | Child mini-css-extract-plugin node_modules/css-loader/index.js!src/assets/custom.css:
+frontend_1  |     Entrypoint mini-css-extract-plugin = *
+frontend_1  |     [0] ./node_modules/css-loader!./src/assets/custom.css 340 bytes {0} [built]
+frontend_1  |         + 1 hidden module
+frontend_1  | UPDATE AVAILABLE The latest version of `serve` is 11.1.0
+frontend_1  | INFO: Accepting connections at http://localhost:5000
+##### From another console
+$ firefox localhost &
+$ docker-compose ps
+    Name                   Command               State         Ports       
+---------------------------------------------------------------------------
+33_backend_1    docker-entrypoint.sh /bin/ ...   Up      8000/tcp          
+33_db_1         docker-entrypoint.sh postgres    Up      5432/tcp          
+33_frontend_1   docker-entrypoint.sh /bin/ ...   Up      5000/tcp          
+33_nginx_1      nginx -g daemon off;             Up      0.0.0.0:80->80/tcp
+33_redis_1      docker-entrypoint.sh redis ...   Up      6379/tcp          
+$ docker-compose exec backend bash
+node@9a275923a796:~$ id
+uid=1000(node) gid=1000(node) groups=1000(node)
+node@9a275923a796:~$ pwd
+/home/node
+node@9a275923a796:~$ exit
+$ docker-compose exec frontend bash
+node@d86e4c0ecca7:~$ id
+uid=1000(node) gid=1000(node) groups=1000(node)
+node@d86e4c0ecca7:~$ exit
+$
+#####
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:48 +0000] "GET / HTTP/1.1" 200 454 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /main.css HTTP/1.1" 200 127 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /main.js HTTP/1.1" 200 4693 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /vendors~main.js HTTP/1.1" 200 106184 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /vendors~main-1.css HTTP/1.1" 200 103205 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /a3e2211dddcba197b5bbf2aa9d5d9a9a.svg HTTP/1.1" 200 1524 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:10:50 +0000] "GET /favicon.ico HTTP/1.1" 200 454 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:41 +0000] "GET /api/ping HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+backend_1   | Got from redis pong
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:42 +0000] "GET /api/slow HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:43 +0000] "GET /api/ping HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:47 +0000] "POST /api/messages HTTP/1.1" 201 7 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+backend_1   | Executing (default): INSERT INTO "messages" ("id","body","createdAt","updatedAt") VALUES (DEFAULT,'y','2019-07-18 17:11:47.378 +00:00','2019-07-18 17:11:47.378 +00:00') RETURNING *;
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:50 +0000] "POST /api/messages HTTP/1.1" 201 7 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+backend_1   | Executing (default): INSERT INTO "messages" ("id","body","createdAt","updatedAt") VALUES (DEFAULT,'n','2019-07-18 17:11:50.206 +00:00','2019-07-18 17:11:50.206 +00:00') RETURNING *;
+backend_1   | Executing (default): SELECT "id", "body", "createdAt", "updatedAt" FROM "messages" AS "message";
+nginx_1     | 172.18.0.1 - - [18/Jul/2019:17:11:51 +0000] "GET /api/messages HTTP/1.1" 200 197 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+Gracefully stopping... (press Ctrl+C again to force)
+Stopping 33_nginx_1    ... done
+Stopping 33_backend_1  ... done
+Stopping 33_redis_1    ... done
+Stopping 33_frontend_1 ... done
+Stopping 33_db_1       ... done
+$

@@ -11,4 +11,5 @@ RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/maste
     npm install --production && \
     rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
     chown -R node:node .
+USER node
 CMD npm start
