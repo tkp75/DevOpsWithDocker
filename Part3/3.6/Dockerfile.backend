@@ -1,17 +1,23 @@
-FROM node:alpine
-EXPOSE 8000
-ENV FRONT_URL=http://nginx:80
+FROM node:alpine as install-backend
 ENV NODE_ENV=production
 WORKDIR /home/node/
 RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz && \
     mv -f docker-hy-backend-example-docker-*/* . && \
-    rm -f -r docker-hy-backend-example-docker-* && \
-    mkdir /home/node/logs && \
-    mv -f logs.txt logs/ && \
+    rm -f -r README.md docker-hy-backend-example-docker-* && \
+    mkdir -p /home/node/logs && \
+    mv -f /home/node/logs.txt /home/node/logs/logs.txt && \
     ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
-    npm install --production --global cross-env && \
-    npm install --production && \
-    rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
+    rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
+    npm install && \
     chown -R node:node .
+
+FROM node:alpine as execute-backend
+EXPOSE 8000
+ENV FRONT_URL=http://nginx:80
+ENV NODE_ENV=production
+RUN apk add --no-cache tini
+COPY --from=install-backend --chown=node:node /home/node/ /home/node/
+WORKDIR /home/node/
 USER node
-CMD npm start
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "index.js"]

@@ -1,0 +1,31 @@
+Size and security optimization was done for a backend image used on previous exercise.
+* Starting point:	DevOpsWithDocker/Part3/3.5/Dockerfile.backend
+* Optimised version:	DevOpsWithDocker/Part3/3.6/Dockerfile.backend
+
+Checks made:
+1. Run with NODE_ENV set to production
+   OK, NODE_ENV set
+2. dependencies in the non-root user directory
+   OK, nothing installed globally
+3. Upgrading/downgrading Yarn
+   N/A, not needed
+4. Non-root User
+   OK, node user used
+5. Installing node-gyp
+   N/A, not needed
+
+Changes made:
+1. Split Dockerfile in two (install and execute)
+   This resulted in smaller layer
+
+2. CMD: you can bypass the package.json's start command and bake it directly into the image itself
+   Running node directly instead of npm allowed to drop cross-env installation and fixed signal handling
+   
+3. Use Tini
+   Using Tini resolved node incompatibilies running as process 1
+
+4. Memory
+   Option added to docker-compose.yml to limit memory usage (in case docker stack deploy is used)
+
+5. Run docker bench security 
+   in progress...

@@ -16,6 +16,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    deploy:
+      resources:
+        limits:
+          memory: 64M
     depends_on:
       - redis
       - db
