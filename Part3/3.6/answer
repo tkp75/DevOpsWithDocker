@@ -1,6 +1,7 @@
-Size and security optimization was done for a backend image used on previous exercise.
+Size and security optimization was done for the backend image used from previous exercise.
 * Starting point:	DevOpsWithDocker/Part3/3.5/Dockerfile.backend
 * Optimised version:	DevOpsWithDocker/Part3/3.6/Dockerfile.backend
+
 
 Checks made:
 1. Run with NODE_ENV set to production
@@ -13,6 +14,7 @@ Checks made:
    OK, node user used
 5. Installing node-gyp
    N/A, not needed
+
 
 Changes made:
 1. Split Dockerfile in two (install and execute)
@@ -28,4 +30,56 @@ Changes made:
    Option added to docker-compose.yml to limit memory usage (in case docker stack deploy is used)
 
 5. Run docker bench security 
-   in progress...
+   Added HEALTHCHECK for backend
+
+
+Final image sizes:
+$ docker images
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+backend                        3.6                 34212b13fd6d        2 minutes ago       123MB
+frontend                       3.5                 ed7ccb33a76a        16 hours ago        90.7MB
+frontend                       3.4                 bee9682c31c1        17 hours ago        233MB
+backend                        3.4                 89c47c120de2        17 hours ago        131MB
+backend                        3.5                 89c47c120de2        17 hours ago        131MB
+frontend                       3.3                 643250857328        19 hours ago        306MB
+backend                        3.3                 e6f4e1a5a667        19 hours ago        204MB
+yle-dl                         latest              d6cfcab31922        23 hours ago        516MB
+postgres                       latest              53912975086f        36 hours ago        312MB
+nginx                          latest              98ebf73aba75        37 hours ago        109MB
+node                           slim                2523ec7bd8fd        38 hours ago        151MB
+python                         slim                63491ee411bb        5 days ago          179MB
+redis                          latest              598a6f110d01        7 days ago          118MB
+node                           alpine              a9a8b83644f7        2 weeks ago         78.8MB
+centos                         latest              9f38484d220f        4 months ago        202MB
+
+
+Dockerfile changes:
+$ sdiff -w 226 -W -B Part3/3.{5,6}/Dockerfile.backend 
+FROM node:alpine											      |	FROM node:alpine as install-backend
+EXPOSE 8000												      <
+ENV FRONT_URL=http://nginx:80										      <
+ENV NODE_ENV=production												ENV NODE_ENV=production
+WORKDIR /home/node/												WORKDIR /home/node/
+RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz && \			RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz && \
+    mv -f docker-hy-backend-example-docker-*/* . && \								    mv -f docker-hy-backend-example-docker-*/* . && \
+    rm -f -r docker-hy-backend-example-docker-* && \							      |	    rm -f -r README.md docker-hy-backend-example-docker-* && \
+    mkdir /home/node/logs && \										      |	    mkdir -p /home/node/logs && \
+    mv -f logs.txt logs/ && \										      |	    mv -f /home/node/logs.txt /home/node/logs/logs.txt && \
+    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \							    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    npm install --production --global cross-env && \							      |	    rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
+    npm install --production && \									      |	    npm install && \
+    rm -f -r README.md /var/cache/* /var/log/* /var/tmp/* /tmp/* && \					      <
+    chown -R node:node .											    chown -R node:node .
+													      >
+													      >	FROM node:alpine as execute-backend
+													      >	EXPOSE 8000
+													      >	ENV FRONT_URL=http://nginx:80
+													      >	ENV NODE_ENV=production
+													      >	RUN apk add --no-cache tini
+													      >	COPY --from=install-backend --chown=node:node /home/node/ /home/node/
+													      >	WORKDIR /home/node/
+USER node													USER node
+CMD npm start												      |	HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f ping ; wget -q http://localhost:8000/ping 
+													      >	ENTRYPOINT ["/sbin/tini", "--"]
+													      >	CMD ["node", "index.js"]
+$

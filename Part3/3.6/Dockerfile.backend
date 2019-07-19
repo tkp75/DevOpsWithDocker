@@ -19,5 +19,6 @@ RUN apk add --no-cache tini
 COPY --from=install-backend --chown=node:node /home/node/ /home/node/
 WORKDIR /home/node/
 USER node
+HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f ping ; wget -q http://localhost:8000/ping ; grep -q pong ping
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "index.js"]
