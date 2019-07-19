@@ -1,0 +1,13 @@
+In this exercise choose one of the following:
+
+a) Create an example setup that uses Kubernetes, Docker Swarm or equivalent using any project and deploy it online. You can use any applications available to you (such as the frontend - backend example). Make sure that the application consists of atleast two different containers that are deployed on two different hosts. Explain what you created in your submission.
+
+You can practice deployment using virtual machines and AWS offers free credits for students.
+
+b) Write a CLI tool to help you set up an environment and deploy it. (Helping with the complete deployment pipeline). This exercise can be done with any project of your choice. For example CLI tool automatically pulls your repositories, sets up databases / other services with Docker and contains relevant commands to reset the environment. (and when ready sends it to CI after which the image is build by docker hub and production server pulls it from there).
+
+Add in explanation of the complete deployment pipeline with new developers in mind with the final steps containing production deployment instructions with Docker.
+
+Explain your process and give a link to the repository in which the CLI tool exists or submit the project inside of the submission repository.
+
+c) Building images inside of a container. Create a project that downloads a repository from github, builds a Dockerfile located in the root and then publishes it into Docker Hub. You can use any technologies of your choice for the implementation. Then create a Dockerfile for it so that it can be run inside a container. Make sure that it can build all of the example projects. Bonus (not required for a pass): use a webhook in the project so it is automatically triggered when changes are made into a specific branch. For this exercise offer a link to your project repository or submit the project inside of the submission reporitory.
