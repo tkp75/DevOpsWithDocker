@@ -1,0 +1,4 @@
+Option a selected: Create an example setup that uses Kubernetes, Docker Swarm or equivalent using any project and deploy it online
+
+Example setup from exercise 3.6 was chosen as a project base. The main difference being frontend Dockerfile edits to match backend changes made in 3.6
+
