@@ -80,6 +80,6 @@ RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master
 													      >	WORKDIR /home/node/
 USER node													USER node
 CMD npm start												      |	HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f ping ; wget -q http://localhost:8000/ping 
-													      >	ENTRYPOINT ["/sbin/tini", "--"]
+													      >	ENTRYPOINT ["/sbin/tini", "-s", "-w", "--"]
 													      >	CMD ["node", "index.js"]
 $
