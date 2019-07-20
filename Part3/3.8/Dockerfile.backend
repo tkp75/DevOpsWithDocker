@@ -8,8 +8,7 @@ RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master
     mkdir -p /home/node/logs && \
     mv -f /home/node/logs.txt /home/node/logs/logs.txt && \
     ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
-    npm install && \
-    chown -R node:node .
+    npm install
 
 FROM node:alpine as execute-backend
 EXPOSE 8000
@@ -20,6 +19,6 @@ RUN apk add --no-cache tini && \
     rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/*
 WORKDIR /home/node/
 USER node
-HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f ping ; wget -q http://localhost:8000/ping ; grep -q pong ping
+HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f /tmp/ping ; wget -q -O /tmp/ping -S http://localhost:8000/ping 2>&1 | grep -q "HTTP.*200 OK" && grep -q pong /tmp/ping
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "index.js"]

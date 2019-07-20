@@ -5,25 +5,26 @@ USER node
 RUN wget -O - https://github.com/docker-hy/frontend-example-docker/tarball/master | tar xz && \
     mv -f docker-hy-frontend-example-docker-*/* . && \
     rm -f -r README.md docker-hy-frontend-example-docker-* && \
-    npm install serve && \
     npm install && \
     chown -R node:node . && \
     npm run-script build
 
-FROM node:alpine execute-frontend
+FROM node:alpine as execute-frontend
+COPY --from=build-frontend --chown=node:node /home/node/dist/ dist/
+RUN apk add --no-cache tini && \
+    rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/* /root/.ash_history /root/.gnupg
+USER node
+WORKDIR /home/node/
 EXPOSE 5000
 ENV API_URL=http://localhost:80/api
 ENV NODE_ENV=production
-WORKDIR /home/node/
-COPY --from=build-frontend --chown=node:node /home/node/dist/ dist/
-RUN apk add --no-cache tini && \
-    npm install serve && \
+ENV ENV=/home/node/.profile
+RUN npm install serve && \
+    echo "export PATH=${PATH}:$(npm bin)" > .profile && \
     mkdir /home/node/logs && \
     touch /home/node/logs/logs.txt && \
     ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
-    rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/* && \
-    chown -R node:node .
-USER node
+    rm -f -r /home/node/.config /home/node/.npm /home/node/package-lock.json
 HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD wget -q -O /dev/null -S http://localhost:5000 2>&1 | grep -q "HTTP.*200 OK"
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["serve", "-s", "-l 5000", "dist"]
+ENTRYPOINT ["/sbin/tini", "-w", "--"]
+CMD ["/home/node/node_modules/.bin/serve", "-s", "-l", "5000", "dist"]
