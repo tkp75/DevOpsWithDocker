@@ -20,5 +20,5 @@ RUN apk add --no-cache tini && \
 WORKDIR /home/node/
 USER node
 HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f /tmp/ping ; wget -q -O /tmp/ping -S http://localhost:8000/ping 2>&1 | grep -q "HTTP.*200 OK" && grep -q pong /tmp/ping
-ENTRYPOINT ["/sbin/tini", "-w", "--"]
+ENTRYPOINT ["/sbin/tini", "-s", "-w", "--"]
 CMD ["node", "index.js"]
