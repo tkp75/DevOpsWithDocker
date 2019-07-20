@@ -1,0 +1,25 @@
+FROM node:alpine as install-backend
+ENV NODE_ENV=production
+WORKDIR /home/node/
+USER node
+RUN wget -O - https://github.com/docker-hy/backend-example-docker/tarball/master | tar xz && \
+    mv -f docker-hy-backend-example-docker-*/* . && \
+    rm -f -r README.md docker-hy-backend-example-docker-* && \
+    mkdir -p /home/node/logs && \
+    mv -f /home/node/logs.txt /home/node/logs/logs.txt && \
+    ln -s /home/node/logs/logs.txt /home/node/logs.txt && \
+    npm install && \
+    chown -R node:node .
+
+FROM node:alpine as execute-backend
+EXPOSE 8000
+ENV FRONT_URL=http://nginx:80
+ENV NODE_ENV=production
+COPY --from=install-backend --chown=node:node /home/node/ /home/node/
+RUN apk add --no-cache tini && \
+    rm -f -r /var/cache/* /var/log/* /var/tmp/* /tmp/*
+WORKDIR /home/node/
+USER node
+HEALTHCHECK --interval=1m --timeout=5s --start-period=2m CMD rm -f ping ; wget -q http://localhost:8000/ping ; grep -q pong ping
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "index.js"]
