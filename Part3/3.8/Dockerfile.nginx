@@ -1,0 +1,10 @@
+FROM nginx
+
+# Install aws cli
+RUN apt-get update && \
+    apt-get -y install python-dev curl unzip && \
+    cd /tmp && \
+    curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
+    unzip awscli-bundle.zip && \
+    ./awscli-bundle/install -i /usr/local && \
+    rm -rf awscli-bundle.zip awscli-bundle

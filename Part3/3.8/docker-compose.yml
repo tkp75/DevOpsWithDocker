@@ -12,7 +12,7 @@ services:
     volumes:
       - ./redis:/data
   backend:
-    image: backend:3.8
+    image: tkp75/backend
     build:
       context: .
       dockerfile: Dockerfile.backend
@@ -20,6 +20,7 @@ services:
       resources:
         limits:
           memory: 64M
+          cpus: '0.10'
     depends_on:
       - redis
       - db
@@ -31,14 +32,27 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=pgpass
   frontend:
-    image: frontend:3.8
+    image: tkp75/frontend
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.10'
     volumes:
       - frontend_logs:/home/node/logs
   nginx:
-    image: nginx
+    image: tkp75/nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.10'
     restart: unless-stopped
     depends_on:
       - frontend
