@@ -13,7 +13,7 @@ Changes made:
 About the deployed service:
 * Service provider: AWS / Vocareum (https://www.vocareum.com/)
 * User type: AWS Educate Starter Account
-* URL (28.07.2019): http://18.232.125.105/
+* Service URL (28.07.2019): http://publiclb-86914657.us-east-1.elb.amazonaws.com/
 * Cluster: DefaultFargateECS
   ECS with Fargate and EC2 support
 * Service: FrontBack-3_8
