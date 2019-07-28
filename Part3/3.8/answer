@@ -8,15 +8,19 @@ Changes made:
 2. An aws CLI was installed to nginx image installed to be able to fetch configuration from S3 bucket on start.
 3. localhost used instead of Docker instance names on nginx.conf file saved to S3 bucket
 4. Task (and Service) declared on ECS used to control Docker instances instead of docker-compose.yml file
+5. Application LoadBalancer installed to provide host name for the service
+   NOTE: Route53 DNS is not supported by student accounts and Elastic IPs cannot be used with Fargate (yet)
 
 
 About the deployed service:
-* Service provider: AWS / Vocareum (https://www.vocareum.com/)
+* Cloud provider: AWS / Vocareum (https://www.vocareum.com/)
 * User type: AWS Educate Starter Account
 * Service URL (28.07.2019): http://publiclb-86914657.us-east-1.elb.amazonaws.com/
+  URL provided by application load balancer
 * Cluster: DefaultFargateECS
   ECS with Fargate and EC2 support
-* Service: FrontBack-3_8
+  Default VPC used
+* Service: FrontBack
   Fargate operated single task
 * Task: FrontBack
   Fargate operated five docker images
