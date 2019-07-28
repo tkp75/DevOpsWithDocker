@@ -1,4 +1,21 @@
-Option a selected: Create an example setup that uses Kubernetes, Docker Swarm or equivalent using any project and deploy it online
+Option "a" selected: Create an example setup that uses Kubernetes, Docker Swarm or equivalent using any project and deploy it online
 
-Example setup from exercise 3.6 was chosen as a project base. The main difference being frontend Dockerfile edits to match backend changes made in 3.6. nginx has aws client preinstalled to be able to fetch configuration from S3 bucket on start.
 
+Example service from exercise 3.6 was chosen as a project base.
+
+Changes made:
+1. Frontend Dockerfile updated to match backend changes made in 3.6.
+2. An aws CLI was installed to nginx image installed to be able to fetch configuration from S3 bucket on start.
+3. localhost used instead of Docker instance names on nginx.conf file saved to S3 Bucket
+4. Task (and Service) declared on ECS used to control Docker instances instead of docker-compose.yml file
+
+
+Files on this directory:
+Dockerfile.backend	Dockerfile for backend that was deployed to Docker Hub as tkp75/backend
+Dockerfile.frontend	Dockerfile for frontend that was deployed to Docker Hub as tkp75/frontend
+Dockerfile.nginx	Dockerfile for nginx that was deployed to Docker Hub as tkp75/nginx
+answer			Answer summary (This file)
+docker-compose.yml	Docker Compose file used for local testing before AWS ECS deployment
+nginx.conf		nginx configuration file used with Docker Compose.
+question		Exercise 3.8 question text
+status			Progress indicator file for bookkeeping purposes only
