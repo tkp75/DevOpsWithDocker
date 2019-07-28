@@ -1,6 +1,6 @@
 {
   "ipcMode": null,
-  "executionRoleArn": "arn:aws:iam::###USERID###:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::###AWS_USER_ID###:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "dnsSearchDomains": null,
@@ -8,7 +8,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/FargateTask1",
+          "awslogs-group": "/ecs/FrontBack",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -64,7 +64,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/FargateTask1",
+          "awslogs-group": "/ecs/FrontBack",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -131,7 +131,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/FargateTask1",
+          "awslogs-group": "/ecs/FrontBack",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -215,7 +215,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/FargateTask1",
+          "awslogs-group": "/ecs/FrontBack",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -273,7 +273,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/FargateTask1",
+          "awslogs-group": "/ecs/FrontBack",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -328,12 +328,12 @@
   ],
   "placementConstraints": [],
   "memory": "512",
-  "taskRoleArn": "arn:aws:iam::###USERID###:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::###AWS_USER_ID###:role/ecsTaskExecutionRole",
   "compatibilities": [
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:###USERID###:task-definition/FrontBack:9",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:###AWS_USER_ID###:task-definition/FrontBack:11",
   "family": "FrontBack",
   "requiresAttributes": [
     {
@@ -397,7 +397,7 @@
   ],
   "networkMode": "awsvpc",
   "cpu": "256",
-  "revision": 9,
+  "revision": 11,
   "status": "ACTIVE",
   "proxyConfiguration": null,
   "volumes": [
